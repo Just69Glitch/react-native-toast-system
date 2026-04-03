@@ -1,3 +1,5 @@
+/// <reference path="./internal/react-native-classname.d.ts" />
+
 export {
   ToastHost,
   ToastViewport,
