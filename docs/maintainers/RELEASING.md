@@ -1,12 +1,13 @@
-# Releasing Guide (Pre-Publish Automation Baseline)
+# Releasing Guide
 
-Phase 8 introduces CI and release preparation automation, but does not perform live npm publish.
+This repository includes release automation for preparation, dry-run validation, release notes drafting, and manual live npm publish.
 
 ## Workflows
 
 - `ci.yml`: validates PRs and `main` with lint/typecheck/test/build/pack/example/docs gates.
 - `release-preparation.yml`: manual workflow that prepares a release PR by bumping version and adding changelog heading placeholders.
 - `release-dry-run.yml`: manual workflow that runs full gates and `pnpm publish --dry-run` only.
+- `release-publish.yml`: manual workflow that runs full gates and publishes to npm using `NPM_TOKEN`.
 - `draft-release-notes.yml`: creates draft GitHub releases from version tags (`v*.*.*`) with generated release notes.
 
 ## Release Preparation Checklist
@@ -19,7 +20,10 @@ Phase 8 introduces CI and release preparation automation, but does not perform l
    - finalize release notes under new version heading
 4. Merge release PR after review.
 5. Create/push version tag (`vX.Y.Z`) once release commit is on `main`.
-6. Review generated draft release notes from `draft-release-notes.yml`.
+6. Run `release-publish.yml`:
+   - `ref`: release tag or release commit on `main`
+   - `npm_dist_tag`: usually `latest`
+7. Review generated draft release notes from `draft-release-notes.yml`.
 
 ## Local Validation Commands
 
@@ -33,17 +37,21 @@ pnpm run example:validate
 pnpm run docs:check
 ```
 
-## NPM Publish Safety (This Phase)
+## NPM Publish Safety
 
 - `release-dry-run.yml` validates publishability with `pnpm publish --dry-run`.
-- No workflow in this phase performs live `npm publish`.
-- Live publish enablement is deferred to Phase 9.
+- `release-publish.yml` performs live publish only when manually dispatched.
+- Publish workflow fails fast if target version already exists on npm.
+- Full release gates are executed before publish.
 
 ## Secrets and Permissions
 
-Current Phase 8 workflows rely on `GITHUB_TOKEN` only.
+Workflows rely on `GITHUB_TOKEN` for repo operations.
 
-Future live publish (Phase 9) will require an npm token secret (for example `NPM_TOKEN`) and explicit publish guards.
+Live publish requires:
+
+- `NPM_TOKEN` (repository Actions secret)
+- workflow manual dispatch (`release-publish.yml`)
 
 ## Packaging and Docs Footprint
 
