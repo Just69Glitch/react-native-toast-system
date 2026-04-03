@@ -5,6 +5,14 @@ on:
   push:
     branches:
       - main
+    paths:
+      - docs/**
+      - website/**
+      - scripts/check-docs.js
+      - scripts/docs-version.js
+      - package.json
+      - pnpm-lock.yaml
+      - .github/workflows/docs-deploy.yml
 
 permissions:
   contents: read
