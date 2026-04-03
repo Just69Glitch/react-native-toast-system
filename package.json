@@ -69,7 +69,7 @@
     "deps:install:example": "node scripts/install-subprojects.js example",
     "deps:install:website": "node scripts/install-subprojects.js website",
     "deps:install:all": "node scripts/install-subprojects.js root example website",
-    "example:install": "pnpm --dir example install",
+    "example:install": "pnpm --dir example install --frozen-lockfile",
     "example:start": "pnpm --dir example start",
     "example:android": "pnpm --dir example android",
     "example:ios": "pnpm --dir example ios",
@@ -85,7 +85,7 @@
     "docs:serve": "pnpm --dir website serve",
     "docs:version": "node scripts/docs-version.js",
     "docs:validate": "pnpm run docs:check && pnpm run docs:install && pnpm run docs:build",
-    "validate:release": "pnpm run lint && pnpm run test && pnpm run build && pnpm run pack:dry-run && pnpm run example:validate && pnpm run docs:validate"
+    "validate:release": "pnpm run lint && pnpm run test && pnpm run build && pnpm run pack:dry-run && pnpm run example:install && pnpm run example:validate && pnpm run docs:validate"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
