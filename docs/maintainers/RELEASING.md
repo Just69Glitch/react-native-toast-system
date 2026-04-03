@@ -7,7 +7,7 @@ This repository includes release automation for preparation, dry-run validation,
 - `ci.yml`: validates PRs and `main` with lint/typecheck/test/build/pack/example/docs gates.
 - `release-preparation.yml`: manual workflow that prepares a release PR by bumping version and adding changelog heading placeholders.
 - `release-dry-run.yml`: manual workflow that runs full gates and `pnpm publish --dry-run` only.
-- `release-publish.yml`: manual workflow that runs full gates and publishes to npm using `NPM_TOKEN`.
+- `release-publish.yml`: manual workflow that runs full gates and publishes to npm using Trusted Publishing (OIDC), no npm token required.
 - `draft-release-notes.yml`: creates draft GitHub releases from version tags (`v*.*.*`) with generated release notes.
 
 ## Release Preparation Checklist
@@ -43,6 +43,7 @@ pnpm run docs:check
 - `release-publish.yml` performs live publish only when manually dispatched.
 - Publish workflow fails fast if target version already exists on npm.
 - Full release gates are executed before publish.
+- Live publish uses npm Trusted Publishing (OIDC) with short-lived credentials.
 
 ## Secrets and Permissions
 
@@ -50,8 +51,20 @@ Workflows rely on `GITHUB_TOKEN` for repo operations.
 
 Live publish requires:
 
-- `NPM_TOKEN` (repository Actions secret)
+- npm Trusted Publisher configuration on npmjs.com for this repository/workflow
 - workflow manual dispatch (`release-publish.yml`)
+
+### Trusted Publishing Setup (npm)
+
+1. Open npm package settings for `react-native-toast-system`.
+2. Open `Trusted publishers` and add GitHub Actions publisher:
+   - Organization/User: `Just69Glitch`
+   - Repository: `react-native-toast-system`
+   - Workflow file: `release-publish.yml`
+3. Save.
+4. Optional hardening after first successful publish:
+   - enable package setting to require 2FA and disallow token-based publish
+   - revoke old publish-capable npm tokens
 
 ## Packaging and Docs Footprint
 
