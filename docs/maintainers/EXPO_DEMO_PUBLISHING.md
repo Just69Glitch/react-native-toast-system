@@ -2,13 +2,35 @@
 
 This guide describes a free method to share the `example/` app with a scanable QR code for Expo Go.
 
-This repository does not auto-publish the demo yet. Publish manually when you are ready.
+This repository includes a manual GitHub Action for demo publish:
+
+- `.github/workflows/expo-demo-publish.yml`
 
 ## Goal
 
 - host a publicly shareable demo build
 - get a stable URL
 - show a QR code in `README.md`
+
+## Automated Path (GitHub Action)
+
+Use the `Expo Demo Publish` workflow to run EAS Update from GitHub Actions.
+
+### One-time setup
+
+1. Create an Expo access token.
+2. Add repository secret `EXPO_TOKEN` in `Settings -> Secrets and variables -> Actions`.
+
+### Run workflow
+
+1. Open `Actions -> Expo Demo Publish`.
+2. Click `Run workflow`.
+3. Configure:
+   - `branch` (default `demo`)
+   - `message` (update message)
+   - `platform` (`all`, `android`, or `ios`)
+   - `run_example_validation` (`true` to run `example:validate` first)
+4. Run the workflow and copy the update URL from logs/output.
 
 ## Recommended Free Path (Expo EAS Update)
 
@@ -61,5 +83,5 @@ Manual checks:
 
 ## Notes
 
-- This process is intentionally manual so maintainers can review before sharing.
+- The workflow is intentionally manual (`workflow_dispatch`) so maintainers can review before sharing.
 - No npm publish is required for demo updates.
