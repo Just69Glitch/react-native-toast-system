@@ -1,0 +1,90 @@
+name: Expo Demo Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: EAS Update branch name
+        required: true
+        default: demo
+      message:
+        description: EAS update message
+        required: true
+        default: "Demo update"
+      platform:
+        description: Update platform
+        required: true
+        type: choice
+        options:
+          - all
+          - android
+          - ios
+        default: all
+      run_example_validation:
+        description: Run example validation before publish
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  publish-demo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.30.2
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: |
+            pnpm-lock.yaml
+            example/pnpm-lock.yaml
+
+      - name: Ensure EXPO_TOKEN is configured
+        shell: bash
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: |
+          if [ -z "${EXPO_TOKEN}" ]; then
+            echo "::error::Missing EXPO_TOKEN secret. Add it in repository Settings -> Secrets and variables -> Actions."
+            exit 1
+          fi
+
+      - name: Install root dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install example dependencies
+        run: pnpm run example:install
+
+      - name: Optional example validation
+        if: ${{ inputs.run_example_validation }}
+        run: pnpm run example:validate
+
+      - name: Verify Expo auth
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: pnpm --dir example dlx eas-cli@latest whoami
+
+      - name: Publish Expo demo update
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: |
+          pnpm --dir example dlx eas-cli@latest update \
+            --non-interactive \
+            --branch "${{ inputs.branch }}" \
+            --message "${{ inputs.message }}" \
+            --platform "${{ inputs.platform }}"
