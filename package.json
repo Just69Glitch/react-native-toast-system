@@ -1,0 +1,146 @@
+{
+  "name": "react-native-toast-system",
+  "version": "1.0.2",
+  "description": "A production-ready toast notification system for React Native.",
+  "license": "MIT",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "source": "./src/index.ts",
+  "main": "./lib/commonjs/index.js",
+  "module": "./lib/module/index.js",
+  "react-native": "./src/index.ts",
+  "types": "./lib/typescript/commonjs/index.d.ts",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "react-native": "./src/index.ts",
+      "import": {
+        "types": "./lib/typescript/module/index.d.ts",
+        "default": "./lib/module/index.js"
+      },
+      "require": {
+        "types": "./lib/typescript/commonjs/index.d.ts",
+        "default": "./lib/commonjs/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "lib",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "!lib/**/*.map"
+  ],
+  "sideEffects": false,
+  "keywords": [
+    "react-native",
+    "toast",
+    "notifications",
+    "typescript",
+    "mobile",
+    "library"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Just69Glitch/react-native-toast-system.git"
+  },
+  "homepage": "https://github.com/Just69Glitch/react-native-toast-system#readme",
+  "bugs": {
+    "url": "https://github.com/Just69Glitch/react-native-toast-system/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "pnpm@10.30.2",
+  "scripts": {
+    "build": "bob build",
+    "lint": "pnpm run lint:basic",
+    "lint:basic": "pnpm run typecheck",
+    "typecheck": "tsc --project tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "docs:check": "node scripts/check-docs.js",
+    "docs:footprint:check": "node scripts/check-docs.js --footprint-only",
+    "deps:install:root": "node scripts/install-subprojects.js root",
+    "deps:install:example": "node scripts/install-subprojects.js example",
+    "deps:install:website": "node scripts/install-subprojects.js website",
+    "deps:install:all": "node scripts/install-subprojects.js root example website",
+    "example:install": "pnpm --dir example install --frozen-lockfile",
+    "example:start": "pnpm --dir example start",
+    "example:android": "pnpm --dir example android",
+    "example:ios": "pnpm --dir example ios",
+    "example:web": "pnpm --dir example web",
+    "example:typecheck": "tsc --project example/tsconfig.json --noEmit",
+    "example:config:check": "node -e \"const fs=require('fs');const required=['example/package.json','example/app.json','example/app/_layout.tsx','example/app/index.tsx'];const missing=required.filter((f)=>!fs.existsSync(f));if(missing.length){console.error('Missing Expo demo files: '+missing.join(', '));process.exit(1);}console.log('Expo demo config check passed.');\"",
+    "example:validate": "pnpm run example:typecheck && pnpm run example:config:check",
+    "clean": "node -e \"require('fs').rmSync('lib', { recursive: true, force: true })\"",
+    "pack:dry-run": "pnpm pack --dry-run",
+    "docs:install": "pnpm --dir website install --frozen-lockfile",
+    "docs:start": "pnpm --dir website start",
+    "docs:build": "pnpm --dir website build",
+    "docs:serve": "pnpm --dir website serve",
+    "docs:version": "node scripts/docs-version.js",
+    "docs:validate": "pnpm run docs:check && pnpm run docs:install && pnpm run docs:build",
+    "validate:release": "pnpm run lint && pnpm run test && pnpm run build && pnpm run pack:dry-run && pnpm run example:install && pnpm run example:validate && pnpm run docs:validate"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-native": ">=0.72.0",
+    "react-native-gesture-handler": ">=2.12.0",
+    "react-native-reanimated": ">=3.6.0",
+    "react-native-safe-area-context": ">=4.8.0",
+    "react-native-screens": ">=3.27.0",
+    "react-native-svg": ">=13.0.0",
+    "react-native-worklets": ">=0.3.0"
+  },
+  "peerDependenciesMeta": {
+    "react-native-screens": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.14",
+    "react": "19.2.4",
+    "react-native": "0.84.1",
+    "react-native-builder-bob": "^0.40.18",
+    "react-native-gesture-handler": "2.28.0",
+    "react-native-reanimated": "4.1.4",
+    "react-native-safe-area-context": "5.6.2",
+    "react-native-screens": "4.17.0",
+    "react-native-svg": "15.14.0",
+    "react-native-worklets": "0.6.1",
+    "typescript": "^5.4.0",
+    "vitest": "^4.1.2"
+  },
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      [
+        "commonjs",
+        {
+          "esm": true
+        }
+      ],
+      [
+        "module",
+        {
+          "esm": true
+        }
+      ],
+      [
+        "typescript",
+        {
+          "project": "tsconfig.build.json"
+        }
+      ]
+    ]
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.29.2"
+  }
+}

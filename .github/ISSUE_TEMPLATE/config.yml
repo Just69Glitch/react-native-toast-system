@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Support question
+    url: https://github.com/Just69Glitch/react-native-toast-system/issues/new
+    about: Use issues for usage/support questions with repro details.
+  - name: Security report policy
+    url: https://github.com/Just69Glitch/react-native-toast-system/blob/main/.github/SECURITY.md
+    about: Follow the private disclosure process for vulnerabilities.

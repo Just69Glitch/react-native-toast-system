@@ -1,0 +1,57 @@
+name: Bug report
+description: Report a reproducible bug in react-native-toast-system
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Please provide a minimal reproduction and environment details.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What happened and what did you expect?
+      placeholder: Clear and concise bug summary.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      description: Include exact steps and sample code if possible.
+      placeholder: |
+        1. Configure provider/host...
+        2. Trigger toast...
+        3. Observe...
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Provide versions and platforms.
+      placeholder: |
+        react-native-toast-system:
+        react-native:
+        react:
+        platform/device:
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs and screenshots
+      description: Paste relevant logs/screenshots.
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues before opening this.
+          required: true
+        - label: I can reproduce this with package-root imports only.
+          required: true
+        - label: This is not a security vulnerability report.
+          required: true
