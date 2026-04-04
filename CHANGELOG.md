@@ -18,6 +18,12 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 - _No unreleased entries yet._
 
+## [1.2.1] - 2026-04-04
+
+### Changed
+
+- Clarified maintainer release order so Expo demo README updates happen before npm publish when the npm package page must reflect the latest demo block.
+
 ## [1.2.0] - 2026-04-04
 
 ### Added
