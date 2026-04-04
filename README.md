@@ -111,9 +111,9 @@ pnpm run example:web
 ## Live Expo Demo
 
 <!-- expo-demo:start -->
-Latest Expo demo deep link: `exp://u.expo.dev/3809a530-4f74-45b2-bb25-7a8a6e8672f4/group/9e023b72-d63b-4407-8f0d-51078f571f01`
+Latest Expo demo deep link: `exp://u.expo.dev/3809a530-4f74-45b2-bb25-7a8a6e8672f4/group/99de30bc-76e6-40f8-a041-33e2fe7bce74`
 
-![Expo Demo QR](https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=exp%3A%2F%2Fu.expo.dev%2F3809a530-4f74-45b2-bb25-7a8a6e8672f4%2Fgroup%2F9e023b72-d63b-4407-8f0d-51078f571f01)
+![Expo Demo QR](https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=exp%3A%2F%2Fu.expo.dev%2F3809a530-4f74-45b2-bb25-7a8a6e8672f4%2Fgroup%2F99de30bc-76e6-40f8-a041-33e2fe7bce74)
 <!-- expo-demo:end -->
 
 ## Development Commands
