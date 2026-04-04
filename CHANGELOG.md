@@ -18,6 +18,19 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 - _No unreleased entries yet._
 
+## [1.2.0] - 2026-04-04
+
+### Added
+
+- Subpath exports for `components`, `hooks`, `providers`, `utils`, and `types` to support more granular imports.
+- New release validation script (`pack:verify:subpaths`) to verify packed tarballs exclude `src/` and keep subpath exports resolvable.
+
+### Changed
+
+- Package publishing footprint now ships built artifacts/docs/license/changelog without shipping `src/`.
+- Example Expo app now uses subpath imports throughout to validate real consumer usage.
+- Documentation/README now include subpath import guidance and a platform support note (currently iOS/Android only).
+
 ## [0.1.0] - 2026-03-31
 
 ### Added
