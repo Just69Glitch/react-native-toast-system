@@ -25,10 +25,17 @@ function buildDemoBlock(deepLink) {
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(deepLink)}`;
   return [
     START_MARKER,
-    `Latest Expo demo deep link: \`${deepLink}\``,
-    "",
-    `![Expo Demo QR](${qrUrl})`,
-    END_MARKER,
+    "        <img",
+    `          src="${qrUrl}"`,
+    '          alt="Expo Demo QR"',
+    '          width="160"',
+    "        />",
+    "      </p>",
+    "      <p>",
+    `        <a href="${deepLink}">`,
+    "          Open demo deep link",
+    "        </a>",
+    `        ${END_MARKER}`,
   ].join("\n");
 }
 
@@ -52,8 +59,8 @@ function main() {
   }
 
   const nextReadme = readme.replace(
-    new RegExp(`${START_MARKER}[\\s\\S]*?${END_MARKER}`),
-    block
+    /<!-- expo-demo:start -->[\s\S]*?<!-- expo-demo:end -->/,
+    block,
   );
 
   fs.writeFileSync(README_PATH, nextReadme, "utf8");

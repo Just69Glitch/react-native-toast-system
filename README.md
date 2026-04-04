@@ -1,7 +1,37 @@
 # react-native-toast-system
 
-`react-native-toast-system` is a TypeScript-first toast system for React Native apps that need stable behavior across complex UI surfaces (screens, modals, sheets, nested hosts, navigation transitions, and keyboard-heavy layouts).
-
+<!-- markdownlint-disable MD033 -->
+<!-- Required for layout: GitHub Markdown doesn't support columns -->
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top" align="left" width="60%">
+      <p>
+        <code>react-native-toast-system</code> is a TypeScript-first toast system for
+        React Native apps that need stable behavior across complex UI surfaces
+        (screens, modals, sheets, nested hosts, navigation transitions, and
+        keyboard-heavy layouts).
+      </p>
+    </td>
+    <td valign="top" align="center" width="40%">
+      <p><strong>Live Expo Demo</strong></p>
+      <p>
+        <!-- expo-demo:start -->
+        <img
+          src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=exp%3A%2F%2Fu.expo.dev%2F3809a530-4f74-45b2-bb25-7a8a6e8672f4%2Fgroup%2F99de30bc-76e6-40f8-a041-33e2fe7bce74"
+          alt="Expo Demo QR"
+          width="160"
+        />
+      </p>
+      <p>
+        <a href="exp://u.expo.dev/3809a530-4f74-45b2-bb25-7a8a6e8672f4/group/99de30bc-76e6-40f8-a041-33e2fe7bce74">
+          Open demo deep link
+        <!-- expo-demo:end -->
+        </a>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- markdownlint-enable MD033 -->
 ## Why This Library
 
 - Host-aware architecture for real app surfaces, not just a single root stack
@@ -107,14 +137,6 @@ pnpm run example:android
 pnpm run example:ios
 pnpm run example:web
 ```
-
-## Live Expo Demo
-
-<!-- expo-demo:start -->
-Latest Expo demo deep link: `exp://u.expo.dev/3809a530-4f74-45b2-bb25-7a8a6e8672f4/group/99de30bc-76e6-40f8-a041-33e2fe7bce74`
-
-![Expo Demo QR](https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=exp%3A%2F%2Fu.expo.dev%2F3809a530-4f74-45b2-bb25-7a8a6e8672f4%2Fgroup%2F99de30bc-76e6-40f8-a041-33e2fe7bce74)
-<!-- expo-demo:end -->
 
 ## Development Commands
 
