@@ -1,6 +1,6 @@
 import { useRouter } from "expo-router";
 import { StyleSheet, View } from "react-native";
-import { toast } from "react-native-toast-system";
+import { toast } from "react-native-toast-system/utils";
 import { ThemedText } from "@/components/themed-text";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import {
@@ -90,12 +90,6 @@ export default function FeedScreen() {
       <DrawerScenarioCard title="Scenario Routes">
         <View style={styles.grid}>
           <DrawerActionButton
-            label="Basics"
-            tone="neutral"
-            style={styles.gridButton}
-            onPress={() => router.push("/minimal")}
-          />
-          <DrawerActionButton
             label="Variants"
             tone="neutral"
             style={styles.gridButton}
@@ -106,12 +100,6 @@ export default function FeedScreen() {
             tone="neutral"
             style={styles.gridButton}
             onPress={() => router.push("/templates")}
-          />
-          <DrawerActionButton
-            label="APIs"
-            tone="neutral"
-            style={styles.gridButton}
-            onPress={() => router.push("/api")}
           />
           <DrawerActionButton
             label="Hosts"
@@ -136,6 +124,12 @@ export default function FeedScreen() {
             tone="neutral"
             style={styles.gridButton}
             onPress={() => router.push("/stress")}
+          />
+          <DrawerActionButton
+            label="APIs"
+            tone="neutral"
+            style={styles.gridButton}
+            onPress={() => router.push("/api")}
           />
         </View>
       </DrawerScenarioCard>

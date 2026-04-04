@@ -1,7 +1,7 @@
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { TextInput, View } from "react-native";
-import { toast } from "react-native-toast-system";
+import { toast } from "react-native-toast-system/utils";
 import { ThemedText } from "@/components/themed-text";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { useAppPreferences } from "@/hooks/use-app-preferences";

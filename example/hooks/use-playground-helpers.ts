@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { toast, useToast } from "react-native-toast-system";
+import { useToast } from "react-native-toast-system/hooks";
+import { toast } from "react-native-toast-system/utils";
 type DemoHostId =
   | "root"
   | "secondary-host"

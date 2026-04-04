@@ -1,4 +1,4 @@
-import { toast } from "react-native-toast-system";
+import { toast } from "react-native-toast-system/utils";
 import {
   DrawerActionButton,
   DrawerPlaygroundScreen,

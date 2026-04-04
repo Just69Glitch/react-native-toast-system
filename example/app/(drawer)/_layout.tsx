@@ -1,6 +1,6 @@
 import { Drawer } from "expo-router/drawer";
 import { Fragment, useMemo } from "react";
-import { ToastViewport } from "react-native-toast-system";
+import { ToastViewport } from "react-native-toast-system/components";
 import { useAppPreferences } from "@/hooks/use-app-preferences";
 
 const screenEntries = [

@@ -9,7 +9,7 @@ import {
   type ViewStyle,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import type { ToastDirection } from "react-native-toast-system";
+import type { ToastDirection } from "react-native-toast-system/types";
 import { useAppPreferences, type ThemeMode } from "@/hooks/use-app-preferences";
 import { useThemeColor } from "@/hooks/use-theme-color";
 

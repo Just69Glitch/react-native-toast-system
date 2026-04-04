@@ -3,8 +3,8 @@ import { Modal, StyleSheet, Text, View } from "react-native";
 import {
   ToastNativeSurfaceBoundary,
   ToastViewport,
-  toast,
-} from "react-native-toast-system";
+} from "react-native-toast-system/components";
+import { toast } from "react-native-toast-system/utils";
 import {
   DrawerActionButton,
   DrawerPlaygroundScreen,

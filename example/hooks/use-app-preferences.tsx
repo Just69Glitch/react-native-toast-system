@@ -5,7 +5,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import type { ToastDirection } from "react-native-toast-system";
+import type { ToastDirection } from "react-native-toast-system/types";
 import { useColorScheme as useRNColorScheme } from "react-native";
 
 export type ThemeMode = "auto" | "light" | "dark";

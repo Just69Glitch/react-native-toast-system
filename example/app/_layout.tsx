@@ -11,7 +11,8 @@ import { useEffect, useMemo, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-reanimated";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { ToastProvider, ToastViewport } from "react-native-toast-system";
+import { ToastViewport } from "react-native-toast-system/components";
+import { ToastProvider } from "react-native-toast-system/providers";
 
 import { PreferencesBubble } from "@/components/preferences-bubble";
 import {
