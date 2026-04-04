@@ -1,4 +1,7 @@
-# Expo Demo Publishing And QR
+
+# Expo Demo Publishing
+
+> **Platform support (current):** iOS and Android only. Web is not officially supported yet and may be added in future releases.
 
 This guide describes a free method to share the `example/` app with a scanable QR code for Expo Go.
 

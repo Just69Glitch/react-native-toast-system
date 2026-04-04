@@ -3,7 +3,10 @@ title: API Lifecycle and Enums
 slug: /api-reference/lifecycle
 ---
 
+
 # API Lifecycle and Enums
+
+> **Platform support (current):** iOS and Android only. Web is not officially supported yet and may be added in future releases.
 
 Lifecycle callbacks, close reasons, unions/enums, and public type-export index.
 

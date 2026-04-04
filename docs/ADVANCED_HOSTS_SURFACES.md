@@ -3,7 +3,10 @@ title: Advanced Guides - Hosts and Surfaces
 slug: /advanced-guides/hosts-and-surfaces
 ---
 
-# Advanced Guides: Hosts and Surfaces
+
+# Advanced Guides - Hosts and Surfaces
+
+> **Platform support (current):** iOS and Android only. Web is not officially supported yet and may be added in future releases.
 
 Focused recipes for host targeting, nested routing, modal/sheet surfaces, navigation persistence, and keyboard overlap handling.
 

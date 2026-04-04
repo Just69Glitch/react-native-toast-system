@@ -3,7 +3,10 @@ title: Installation
 slug: /getting-started/installation
 ---
 
+
 # Installation
+
+> **Platform support (current):** iOS and Android only. Web is not officially supported yet and may be added in future releases.
 
 Install `react-native-toast-system` using your package manager of choice.
 
@@ -71,6 +74,19 @@ bun add react-native-screens
 
 - Package is present in `package.json`.
 - App can type-check imports from `react-native-toast-system`.
+
+## Optional Subpath Imports
+
+Root import is still the default and fully supported.
+
+You can also import from subpaths when you want narrower entry points:
+
+```ts
+import { ToastProvider } from "react-native-toast-system/providers";
+import { ToastHost, ToastViewport } from "react-native-toast-system/components";
+import { useToast } from "react-native-toast-system/hooks";
+import { toast } from "react-native-toast-system/utils";
+```
 
 ## Media Placeholders
 

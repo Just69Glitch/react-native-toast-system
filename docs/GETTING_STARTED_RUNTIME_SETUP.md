@@ -3,7 +3,10 @@ title: Runtime Setup
 slug: /getting-started/runtime-setup
 ---
 
+
 # Runtime Setup
+
+> **Platform support (current):** iOS and Android only. Web is not officially supported yet and may be added in future releases.
 
 Before validating toast behavior, confirm app runtime prerequisites.
 

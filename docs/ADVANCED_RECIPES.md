@@ -3,7 +3,10 @@ title: Advanced Guides
 slug: /advanced-guides
 ---
 
-# Advanced Recipes
+
+# Advanced Guides
+
+> **Platform support (current):** iOS and Android only. Web is not officially supported yet and may be added in future releases.
 
 This guide is split into focused pages for easier scanning during implementation and debugging.
 

@@ -3,7 +3,10 @@ title: Troubleshooting
 slug: /troubleshooting
 ---
 
-# Troubleshooting and Known Limitations
+
+# Troubleshooting
+
+> **Platform support (current):** iOS and Android only. Web is not officially supported yet and may be added in future releases.
 
 Use this document as an operational debugging guide for real app integration issues.
 
@@ -161,4 +164,3 @@ Current confidence status:
 - run `pnpm run example:validate`
 - run `pnpm run example:start` and verify startup logs
 - execute manual protocols for modal, sheet, keyboard, navigation persistence, host targeting, promise flows, theme, and RTL
-

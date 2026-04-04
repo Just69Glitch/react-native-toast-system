@@ -3,7 +3,10 @@ title: First Toast
 slug: /getting-started/first-toast
 ---
 
+
 # First Toast
+
+> **Platform support (current):** iOS and Android only. Web is not officially supported yet and may be added in future releases.
 
 This is the shortest path to first success.
 

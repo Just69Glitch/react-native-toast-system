@@ -3,7 +3,10 @@ title: API Components
 slug: /api-reference/components
 ---
 
+
 # API Components
+
+> **Platform support (current):** iOS and Android only. Web is not officially supported yet and may be added in future releases.
 
 Contract details for component value exports. Import from package root only:
 
@@ -94,7 +97,7 @@ function ToastVariantIcon(props: {
 }): JSX.Element | null;
 ```
 
-#### Props Contract
+#### Variant Icons Props Contract
 
 | Name | Type | Required | Default | Description | Allowed options/values |
 | --- | --- | --- | --- | --- | --- |
@@ -121,7 +124,7 @@ function ToastDismissIconButton(props: {
 }): JSX.Element;
 ```
 
-#### Props Contract
+#### Dismiss Icon Props Contract
 
 | Name | Type | Required | Default | Description | Allowed options/values |
 | --- | --- | --- | --- | --- | --- |

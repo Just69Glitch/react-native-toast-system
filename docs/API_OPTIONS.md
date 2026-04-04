@@ -3,7 +3,10 @@ title: API Options
 slug: /api-reference/options
 ---
 
+
 # API Options
+
+> **Platform support (current):** iOS and Android only. Web is not officially supported yet and may be added in future releases.
 
 Contract details for configuration and option objects used by hosts/controllers.
 

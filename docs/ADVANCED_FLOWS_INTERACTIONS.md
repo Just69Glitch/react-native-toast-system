@@ -3,7 +3,10 @@ title: Advanced Guides - Flows and Interactions
 slug: /advanced-guides/flows-and-interactions
 ---
 
-# Advanced Guides: Flows and Interactions
+
+# Advanced Guides - Flows and Interactions
+
+> **Platform support (current):** iOS and Android only. Web is not officially supported yet and may be added in future releases.
 
 Focused recipes for gestures, async lifecycle flows, grouping controls, boundary refs, and typed template facades.
 

@@ -3,7 +3,10 @@ title: Architecture
 slug: /core-concepts
 ---
 
-# Architecture Guide
+
+# Architecture
+
+> **Platform support (current):** iOS and Android only. Web is not officially supported yet and may be added in future releases.
 
 ## Conceptual Model
 

@@ -1,19 +1,28 @@
 # react-native-toast-system
 
 <!-- markdownlint-disable MD033 -->
-<!-- Required for layout: GitHub Markdown doesn't support columns -->
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
   <tr>
     <td valign="top" align="left" width="60%">
       <p>
-        <code>react-native-toast-system</code> is a TypeScript-first toast system for
-        React Native apps that need stable behavior across complex UI surfaces
-        (screens, modals, sheets, nested hosts, navigation transitions, and
-        keyboard-heavy layouts).
+        <strong>TypeScript-first toasts for real-world React Native apps.</strong>
+      </p>
+      <ul>
+        <li>🎯 Simple APIs: <code>toast</code> + <code>useToast</code></li>
+        <li>🧩 Host-aware rendering for screens, modals, and sheets</li>
+        <li>⚡ Built for gestures, keyboard-heavy layouts, and navigation transitions</li>
+        <li>🛠️ Production features: templates, dedupe, grouping, and priority flows</li>
+      </ul>
+      <p>
+        <a href="https://just69glitch.github.io/react-native-toast-system/">📚 Docs</a>
+        ·
+        <a href="./docs/GETTING_STARTED.md">🚀 Getting Started</a>
+        ·
+        <a href="./docs/API_REFERENCE.md">🧠 API</a>
       </p>
     </td>
     <td valign="top" align="center" width="40%">
-      <p><strong>Live Expo Demo</strong></p>
+      <p><strong>📱 Live Expo Demo</strong></p>
       <p>
         <!-- expo-demo:start -->
         <img
@@ -31,7 +40,9 @@
 </table>
 <!-- markdownlint-enable MD033 -->
 
-## Why This Library
+> **Platform support (current):** iOS and Android only. Web is not officially supported yet and may be added in future releases.
+
+## ✨ Why This Library
 
 - Host-aware architecture for real app surfaces, not just a single root stack
 - Typed API with global (`toast`) and hook (`useToast`) controllers
@@ -39,7 +50,7 @@
 - Deck/classic interaction modes with configurable behavior
 - Integration-focused docs and Expo playground for manual validation
 
-## Quick Links
+## 🔗 Quick Links
 
 - Docs site: <https://just69glitch.github.io/react-native-toast-system/>
 - Getting Started: [docs/GETTING_STARTED.md](./docs/GETTING_STARTED.md)
@@ -48,12 +59,12 @@
 - Troubleshooting: [docs/TROUBLESHOOTING.md](./docs/TROUBLESHOOTING.md)
 - Expo example notes: [example/README.md](./example/README.md)
 
-## Ops Playbooks
+## 🧭 Ops Playbooks
 
 - Docs deployment (GitHub Pages): [docs/maintainers/DEPLOY_GITHUB_PAGES.md](./docs/maintainers/DEPLOY_GITHUB_PAGES.md)
 - Expo demo publishing + QR workflow: [docs/maintainers/EXPO_DEMO_PUBLISHING.md](./docs/maintainers/EXPO_DEMO_PUBLISHING.md)
 
-## Installation
+## 📦 Installation
 
 ```bash
 pnpm add react-native-toast-system
@@ -68,7 +79,7 @@ pnpm add react-native-screens
 
 `react-native-screens` is optional and mainly needed for RN Screens overlay scenarios.
 
-## Runtime Setup Checklist
+## ✅ Runtime Setup Checklist
 
 1. Enable Reanimated Babel plugin.
 2. Wrap app root with `GestureHandlerRootView`.
@@ -77,7 +88,9 @@ pnpm add react-native-screens
 5. Mount at least one host (`ToastViewport` or `ToastHost`).
 6. For native surfaces (for example React Native `Modal`), wrap with `ToastNativeSurfaceBoundary` when gesture activation needs a dedicated root.
 
-## Quick Start
+## ⚡ Quick Start
+
+Quick start examples target native apps (iOS/Android).
 
 ```tsx
 import React from "react";
@@ -111,7 +124,7 @@ export function App() {
 }
 ```
 
-## API Surface At A Glance
+## 🧩 API Surface At A Glance
 
 - `ToastProvider`: owns store/runtime and binds global API
 - `ToastViewport` / `ToastHost`: renders host stacks
@@ -119,7 +132,24 @@ export function App() {
 - `useToast(hostId?)`: host-scoped controller hook
 - `createToastSystem(...)`: typed system helper for templates
 
-## Expo Playground (In-Repo)
+## Import Paths
+
+Root import remains fully supported:
+
+```ts
+import { ToastProvider, ToastViewport, toast, useToast } from "react-native-toast-system";
+```
+
+Optional subpath imports are also available:
+
+```ts
+import { ToastProvider } from "react-native-toast-system/providers";
+import { ToastHost, ToastViewport } from "react-native-toast-system/components";
+import { useToast } from "react-native-toast-system/hooks";
+import { toast } from "react-native-toast-system/utils";
+```
+
+## 🧪 Expo Playground (In-Repo)
 
 From repository root:
 
@@ -137,7 +167,7 @@ pnpm run example:ios
 pnpm run example:web
 ```
 
-## Development Commands
+## 🛠️ Development Commands
 
 ```bash
 pnpm install
@@ -163,20 +193,20 @@ Release readiness checks:
 pnpm run validate:release
 ```
 
-## Compatibility
+## 🧱 Compatibility
 
 - Node: `>=18`
 - React Native: see `peerDependencies` in [package.json](./package.json)
 - Expo: validated via the in-repo `example/` app
 
-## Validation Philosophy
+## 🔍 Validation Philosophy
 
 This project separates automated and manual confidence:
 
 - Automated: lint, typecheck, tests, build, pack dry-run, example validation, docs validation
 - Manual: modal/sheet parity, gesture interactions, keyboard overlap, navigation persistence, and full RTL behavior validation after app restart
 
-## Governance
+## 🏛️ Governance
 
 - Contributing: [CONTRIBUTING.md](./.github/CONTRIBUTING.md)
 - Code of Conduct: [CODE_OF_CONDUCT.md](./.github/CODE_OF_CONDUCT.md)
@@ -186,6 +216,6 @@ This project separates automated and manual confidence:
 - Release Process: [RELEASING.md](./docs/maintainers/RELEASING.md)
 - Changelog: [CHANGELOG.md](./CHANGELOG.md)
 
-## License
+## 📄 License
 
 MIT

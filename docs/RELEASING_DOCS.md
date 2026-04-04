@@ -3,7 +3,10 @@ title: Releasing Docs
 slug: /releasing-docs
 ---
 
+
 # Releasing Docs
+
+> **Platform support (current):** iOS and Android only. Web is not officially supported yet and may be added in future releases.
 
 This project uses Docusaurus versioned docs hosted on GitHub Pages.
 

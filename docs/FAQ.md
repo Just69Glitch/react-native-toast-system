@@ -3,7 +3,10 @@ title: FAQ
 slug: /faq
 ---
 
+
 # FAQ
+
+> **Platform support (current):** iOS and Android only. Web is not officially supported yet and may be added in future releases.
 
 ## Which React Native versions are supported?
 

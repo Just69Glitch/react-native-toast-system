@@ -1,4 +1,7 @@
-# Versioning Policy
+
+# Versioning
+
+> **Platform support (current):** iOS and Android only. Web is not officially supported yet and may be added in future releases.
 
 This project follows Semantic Versioning with practical guidance for current `0.x` maturity.
 

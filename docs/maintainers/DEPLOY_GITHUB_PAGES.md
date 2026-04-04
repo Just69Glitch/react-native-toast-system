@@ -1,4 +1,7 @@
-# Deploy Docs To GitHub Pages
+
+# Deploy Github Pages
+
+> **Platform support (current):** iOS and Android only. Web is not officially supported yet and may be added in future releases.
 
 This repository already includes a docs deployment workflow:
 

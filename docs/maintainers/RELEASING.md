@@ -1,4 +1,7 @@
-# Releasing Guide
+
+# Releasing
+
+> **Platform support (current):** iOS and Android only. Web is not officially supported yet and may be added in future releases.
 
 This repository includes release automation for preparation, dry-run validation, release notes drafting, and manual live npm publish.
 

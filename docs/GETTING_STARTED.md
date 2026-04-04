@@ -3,7 +3,10 @@ title: Getting Started
 slug: /getting-started
 ---
 
+
 # Getting Started
+
+> **Platform support (current):** iOS and Android only. Web is not officially supported yet and may be added in future releases.
 
 Use this section to go from install to first successful toast with minimal friction.
 

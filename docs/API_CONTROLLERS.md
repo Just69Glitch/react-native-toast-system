@@ -3,7 +3,10 @@ title: API Controllers
 slug: /api-reference/controllers
 ---
 
+
 # API Controllers
+
+> **Platform support (current):** iOS and Android only. Web is not officially supported yet and may be added in future releases.
 
 Contract details for hooks and controller-style function exports. Import from package root only:
 
