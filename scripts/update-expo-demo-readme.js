@@ -34,7 +34,6 @@ function buildDemoBlock(deepLink) {
     "      <p>",
     `        <a href="${deepLink}">`,
     "          Open demo deep link",
-    "        </a>",
     `        ${END_MARKER}`,
   ].join("\n");
 }

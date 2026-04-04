@@ -32,6 +32,7 @@
   </tr>
 </table>
 <!-- markdownlint-enable MD033 -->
+
 ## Why This Library
 
 - Host-aware architecture for real app surfaces, not just a single root stack
