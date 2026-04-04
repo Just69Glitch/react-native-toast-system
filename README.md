@@ -26,13 +26,13 @@
       <p>
         <!-- expo-demo:start -->
         <img
-          src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=exp%3A%2F%2Fu.expo.dev%2F3809a530-4f74-45b2-bb25-7a8a6e8672f4%2Fgroup%2F99de30bc-76e6-40f8-a041-33e2fe7bce74"
+          src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=exp%3A%2F%2Fu.expo.dev%2F3809a530-4f74-45b2-bb25-7a8a6e8672f4%2Fgroup%2F45d81021-eb82-407e-9973-f3478cd40f85"
           alt="Expo Demo QR"
           width="160"
         />
       </p>
       <p>
-        <code>exp://u.expo.dev/3809a530-4f74-45b2-bb25-7a8a6e8672f4/group/99de30bc-76e6-40f8-a041-33e2fe7bce74</code>
+        <code>exp://u.expo.dev/3809a530-4f74-45b2-bb25-7a8a6e8672f4/group/45d81021-eb82-407e-9973-f3478cd40f85</code>
         <!-- expo-demo:end -->
       </p>
     </td>
