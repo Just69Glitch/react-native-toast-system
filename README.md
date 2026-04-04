@@ -23,10 +23,8 @@
         />
       </p>
       <p>
-        <code>
-          exp://u.expo.dev/3809a530-4f74-45b2-bb25-7a8a6e8672f4/group/99de30bc-76e6-40f8-a041-33e2fe7bce74
+        <code>exp://u.expo.dev/3809a530-4f74-45b2-bb25-7a8a6e8672f4/group/99de30bc-76e6-40f8-a041-33e2fe7bce74</code>
         <!-- expo-demo:end -->
-        </code>
       </p>
     </td>
   </tr>
