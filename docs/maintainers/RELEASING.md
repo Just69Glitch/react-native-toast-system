@@ -104,3 +104,4 @@ Enforced via `scripts/check-docs.js` (`docs:check` and `docs:footprint:check`).
 
 - GitHub Pages docs deployment: `docs/maintainers/DEPLOY_GITHUB_PAGES.md`
 - Expo demo publishing and QR flow: `docs/maintainers/EXPO_DEMO_PUBLISHING.md`
+- Growth and distribution plan: `docs/maintainers/GROWTH_DISTRIBUTION_PLAN.md`

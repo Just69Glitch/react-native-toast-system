@@ -39,22 +39,31 @@ export default function Home() {
             <p className={styles.kicker}>React Native Toast Library</p>
           </div>
 
-          <h1 className={styles.title}>Build reliable toast UX with a docs-first workflow.</h1>
+          <h1 className={styles.title}>
+            Build reliable toast UX with a docs-first workflow.
+          </h1>
           <p className={styles.subtitle}>
             This site is the central knowledge base for integrating
             <code> react-native-toast-system </code>
-            into production React Native apps, from first install to advanced host and template behavior.
+            into production React Native apps, from first install to advanced
+            host and template behavior.
           </p>
 
           <div className={styles.actions}>
             <Link
-              className={clsx("button button--primary button--lg", styles.primaryCta)}
+              className={clsx(
+                "button button--primary button--lg",
+                styles.primaryCta,
+              )}
               to="/docs/getting-started"
             >
               Start with Getting Started
             </Link>
             <Link
-              className={clsx("button button--secondary button--lg", styles.secondaryCta)}
+              className={clsx(
+                "button button--secondary button--lg",
+                styles.secondaryCta,
+              )}
               to="/docs/api-reference"
             >
               Open API Reference
@@ -92,4 +101,3 @@ export default function Home() {
     </Layout>
   );
 }
-

@@ -1,69 +1,77 @@
 # react-native-toast-system
 
-<!-- markdownlint-disable MD033 -->
-<table border="0" cellpadding="0" cellspacing="0" width="100%">
-  <tr>
-    <td valign="top" align="left" width="60%">
-      <p>
-        <strong>TypeScript-first toasts for real-world React Native apps.</strong>
-      </p>
-      <ul>
-        <li>🎯 Simple APIs: <code>toast</code> + <code>useToast</code></li>
-        <li>🧩 Host-aware rendering for screens, modals, and sheets</li>
-        <li>⚡ Built for gestures, keyboard-heavy layouts, and navigation transitions</li>
-        <li>🛠️ Production features: templates, dedupe, grouping, and priority flows</li>
-      </ul>
-      <p>
-        <a href="https://just69glitch.github.io/react-native-toast-system/">📚 Docs</a>
-        ·
-        <a href="./docs/GETTING_STARTED.md">🚀 Getting Started</a>
-        ·
-        <a href="./docs/API_REFERENCE.md">🧠 API</a>
-      </p>
-    </td>
-    <td valign="top" align="center" width="40%">
-      <p><strong>📱 Live Expo Demo</strong></p>
-      <p>
-        <!-- expo-demo:start -->
-        <img
-          src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=exp%3A%2F%2Fu.expo.dev%2F3809a530-4f74-45b2-bb25-7a8a6e8672f4%2Fgroup%2F45d81021-eb82-407e-9973-f3478cd40f85"
-          alt="Expo Demo QR"
-          width="160"
-        />
-      </p>
-      <p>
-        <code>exp://u.expo.dev/3809a530-4f74-45b2-bb25-7a8a6e8672f4/group/45d81021-eb82-407e-9973-f3478cd40f85</code>
-        <!-- expo-demo:end -->
-      </p>
-    </td>
-  </tr>
-</table>
-<!-- markdownlint-enable MD033 -->
+Host-aware toasts for React Native apps with screens, modals, and bottom sheets.
 
-> **Platform support (current):** iOS and Android only. Web is not officially supported yet and may be added in future releases.
+- Route toasts to the right UI surface with global and host-scoped APIs.
+- Ship faster with Expo-ready setup that stays stable through gestures, keyboard shifts, and nested navigation.
+- Handle real app feedback flows with built-in dedupe/grouping and promise-based toasts.
 
-## ✨ Why This Library
+> Platform support (current): iOS and Android only. Web is not officially supported yet.
 
-- Host-aware architecture for real app surfaces, not just a single root stack
-- Typed API with global (`toast`) and hook (`useToast`) controllers
-- Built-in templates + custom template support
-- Deck/classic interaction modes with configurable behavior
-- Integration-focused docs and Expo playground for manual validation
+## When should I use this?
 
-## 🔗 Quick Links
+### Use this if
+
+- You need to trigger toasts from both app-wide actions and local surfaces.
+- Your app uses modals, bottom sheets, or nested navigation stacks.
+- You want a typed toast API without building host routing yourself.
+
+### Do not use this if
+
+- You only need a single root-level banner with no surface-specific behavior.
+- Your app is web-only today.
+- You want a full notification center instead of lightweight toast feedback.
+
+## 10-second quick example
+
+```tsx
+import { toast, useToast } from "react-native-toast-system";
+
+// Global usage
+toast.success("Saved successfully");
+
+// Host usage (for example inside a modal)
+const modalToast = useToast("modal");
+modalToast.error("Something went wrong");
+```
+
+## Why this exists
+
+Most toast libraries assume one root host. Real apps do not.
+
+- Modals often need their own surface so feedback is visible where the user is acting.
+- Bottom sheets can clip, overlap, or hide global toasts.
+- Nested navigation can make root-only toast placement feel disconnected from the active UI.
+
+## 45-second demo flow
+
+One scenario, six behaviors: root toast, modal toast, bottom-sheet toast, dedupe, promise lifecycle, and keyboard-safe bottom placement.
+
+Caption: Root success, modal error, sheet warning, deduped retries, promise loading-to-success, and keyboard-aware bottom toast in one continuous flow.
+
+- Full script + recording plan: [docs/DEMO_HOST_AWARE_FLOW.md](./docs/DEMO_HOST_AWARE_FLOW.md)
+
+## Live Expo Demo
+
+Scan the QR to open the in-repo example update.
+
+<!-- expo-demo:start -->
+<img src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=exp%3A%2F%2Fu.expo.dev%2F3809a530-4f74-45b2-bb25-7a8a6e8672f4%2Fgroup%2F45d81021-eb82-407e-9973-f3478cd40f85" alt="Expo Demo QR" width="220" />
+
+`exp://u.expo.dev/3809a530-4f74-45b2-bb25-7a8a6e8672f4/group/45d81021-eb82-407e-9973-f3478cd40f85`
+<!-- expo-demo:end -->
+
+## Quick Links
 
 - Docs site: <https://just69glitch.github.io/react-native-toast-system/>
+- Demo script: [docs/DEMO_HOST_AWARE_FLOW.md](./docs/DEMO_HOST_AWARE_FLOW.md)
+- Decision guide: [docs/COMPARISON_POSITIONING.md](./docs/COMPARISON_POSITIONING.md)
 - Getting Started: [docs/GETTING_STARTED.md](./docs/GETTING_STARTED.md)
 - API Reference: [docs/API_REFERENCE.md](./docs/API_REFERENCE.md)
 - Architecture: [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md)
 - Troubleshooting: [docs/TROUBLESHOOTING.md](./docs/TROUBLESHOOTING.md)
 - Expo example notes: [example/README.md](./example/README.md)
-
-## 🧭 Ops Playbooks
-
-- Docs deployment (GitHub Pages): [docs/maintainers/DEPLOY_GITHUB_PAGES.md](./docs/maintainers/DEPLOY_GITHUB_PAGES.md)
-- Expo demo publishing + QR workflow: [docs/maintainers/EXPO_DEMO_PUBLISHING.md](./docs/maintainers/EXPO_DEMO_PUBLISHING.md)
-
+  
 ## 📦 Installation
 
 ```bash
