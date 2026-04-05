@@ -18,6 +18,24 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 - _No unreleased entries yet._
 
+## [1.2.2] - 2026-04-05
+
+### Added
+
+- Fast onboarding docs set: quick start (`/quick-start-fast`) plus progressive layers for basic usage, modal support, bottom sheet support, advanced routing, and templates/grouping.
+- Demo and positioning docs: host-aware 45-second demo flow doc, approach-based comparison guide, DX improvements plan, and maintainer growth/distribution plan.
+- Real-world recipe docs for Expo Router integration, React Navigation modals, bottom sheet integration, promise API flows, global error handling, and form submission UX.
+- Runtime DX warnings helper (`src/core/dx-warnings.ts`) with dev-time diagnostics for missing provider/before-mount bridge calls, host auto-creation fallback, and dedupe collisions.
+- Test setup guard (`tests/setup.ts`) to keep DX warnings muted in normal test output while allowing opt-in debug visibility.
+
+### Changed
+
+- README top section was rewritten for scan-first positioning and now includes a concise quick example, "When should I use this?" guidance, demo flow section, and refreshed quick links.
+- Docs navigation/home surface now highlights quick start, onboarding layers, demo flow, recipes, comparison, and maintainer guidance for faster discovery.
+- Versioned docs (`website/versioned_docs/version-1.2.0`) and versioned sidebar were synchronized with current docs updates without introducing a new docs version entry.
+- Test command defaults now use verbose Vitest output with clearer per-test visibility; release validation uses retry-aware test execution.
+- Expo demo README updater now writes markdown-safe image markup and has safer group-id fallback resolution logic.
+
 ## [1.2.1] - 2026-04-04
 
 ### Changed
