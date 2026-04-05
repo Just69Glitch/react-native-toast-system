@@ -21,19 +21,20 @@ function resolveGroupId(rawJson) {
   throw new Error("Could not resolve update group ID from eas-update.json");
 }
 
+function resolveGroupIdFromReadme(readme) {
+  const readmeMatch = readme.match(/exp:\/\/u\.expo\.dev\/[0-9a-f-]{36}\/group\/([0-9a-f-]{36})/i);
+  if (readmeMatch) return readmeMatch[1];
+  return null;
+}
+
 function buildDemoBlock(deepLink) {
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(deepLink)}`;
   return [
     START_MARKER,
-    "        <img",
-    `          src="${qrUrl}"`,
-    '          alt="Expo Demo QR"',
-    '          width="160"',
-    "        />",
-    "      </p>",
-    "      <p>",
-    `        <code>${deepLink}</code>`,
-    `        ${END_MARKER}`,
+    `<img src="${qrUrl}" alt="Expo Demo QR" width="220" />`,
+    "",
+    `\`${deepLink}\``,
+    END_MARKER,
   ].join("\n");
 }
 
@@ -45,11 +46,25 @@ function main() {
     throw new Error("Missing expo.extra.eas.projectId in example/app.json");
   }
 
-  const updateRaw = fs.readFileSync(UPDATE_JSON_PATH, "utf8");
-  const groupId = resolveGroupId(updateRaw);
-  const deepLink = `exp://u.expo.dev/${projectId}/group/${groupId}`;
-
   const readme = fs.readFileSync(README_PATH, "utf8");
+  let groupId = null;
+
+  if (fs.existsSync(UPDATE_JSON_PATH)) {
+    const updateRaw = fs.readFileSync(UPDATE_JSON_PATH, "utf8");
+    groupId = resolveGroupId(updateRaw);
+  }
+
+  if (!groupId) {
+    groupId = process.env.EXPO_DEMO_GROUP_ID || resolveGroupIdFromReadme(readme);
+  }
+
+  if (!groupId) {
+    throw new Error(
+      "Could not resolve Expo demo group ID. Provide example/eas-update.json, set EXPO_DEMO_GROUP_ID, or keep an existing exp://.../group/<id> link in README markers.",
+    );
+  }
+
+  const deepLink = `exp://u.expo.dev/${projectId}/group/${groupId}`;
   const block = buildDemoBlock(deepLink);
 
   if (!readme.includes(START_MARKER) || !readme.includes(END_MARKER)) {

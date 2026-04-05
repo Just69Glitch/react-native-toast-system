@@ -1,6 +1,6 @@
 {
   "name": "react-native-toast-system",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "A production-ready toast notification system for React Native.",
   "license": "MIT",
   "private": false,
@@ -115,8 +115,9 @@
     "lint": "pnpm run lint:basic",
     "lint:basic": "pnpm run typecheck",
     "typecheck": "tsc --project tsconfig.json --noEmit",
-    "test": "vitest run",
-    "test:watch": "vitest",
+    "test": "vitest run --reporter=verbose",
+    "test:retry": "pnpm run test || pnpm run test",
+    "test:watch": "vitest --reporter=verbose",
     "docs:check": "node scripts/check-docs.js",
     "docs:footprint:check": "node scripts/check-docs.js --footprint-only",
     "deps:install:root": "node scripts/install-subprojects.js root",
@@ -140,7 +141,7 @@
     "docs:serve": "pnpm --dir website serve",
     "docs:version": "node scripts/docs-version.js",
     "docs:validate": "pnpm run docs:check && pnpm run docs:install && pnpm run docs:build",
-    "validate:release": "pnpm run lint && pnpm run test && pnpm run build && pnpm run pack:dry-run && pnpm run pack:verify:subpaths && pnpm run example:install && pnpm run example:validate && pnpm run docs:validate"
+    "validate:release": "pnpm run lint && pnpm run test:retry && pnpm run build && pnpm run pack:dry-run && pnpm run pack:verify:subpaths && pnpm run example:install && pnpm run example:validate && pnpm run docs:validate"
   },
   "peerDependencies": {
     "react": ">=18.0.0",

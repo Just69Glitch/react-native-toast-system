@@ -1,5 +1,6 @@
 import { EXIT_FALLBACK_BUFFER_MS } from "../constants/toast-constants";
 import { createToastDebugLogger, getToastDebugMeta, getToastRecordDebugMeta } from "./debug";
+import { warnDedupeCollision, warnHostAutoCreated } from "./dx-warnings";
 import type {
   CloseReason,
   ResolvedToastHostConfig,
@@ -285,6 +286,13 @@ export class ToastStore implements ToastStoreBridge {
     const dedupeMode = options.dedupeMode ?? host.config.dedupeMode;
 
     if (dedupeTarget) {
+      warnDedupeCollision({
+        hostId,
+        dedupeMode,
+        targetId: dedupeTarget.id,
+        dedupeKey: options.dedupeKey,
+        explicitId: options.id,
+      });
       this.debug(hostId, "show:dedupe-hit", {
         targetId: dedupeTarget.id,
         mode: dedupeMode,
@@ -1034,6 +1042,8 @@ export class ToastStore implements ToastStoreBridge {
     if (existing) {
       return existing;
     }
+
+    warnHostAutoCreated(hostId);
 
     const inheritedConfig = this.state.hosts[this.defaultHostId]?.config ?? this.baseHostConfig;
 

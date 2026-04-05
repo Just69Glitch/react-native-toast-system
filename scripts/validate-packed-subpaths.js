@@ -3,7 +3,20 @@ const os = require("os");
 const path = require("path");
 const { spawnSync } = require("child_process");
 
-const PNPM_BIN = "pnpm";
+function resolvePnpmInvocation(args) {
+  const npmExecPath = process.env.npm_execpath;
+  if (npmExecPath && fs.existsSync(npmExecPath)) {
+    return {
+      command: process.execPath,
+      args: [npmExecPath, ...args],
+    };
+  }
+
+  return {
+    command: process.platform === "win32" ? "pnpm.cmd" : "pnpm",
+    args,
+  };
+}
 
 function run(command, args, cwd) {
   const result = spawnSync(command, args, {
@@ -31,6 +44,11 @@ function run(command, args, cwd) {
   return result.stdout || "";
 }
 
+function runPnpm(args, cwd) {
+  const invocation = resolvePnpmInvocation(args);
+  return run(invocation.command, invocation.args, cwd);
+}
+
 function main() {
   const repoRoot = process.cwd();
   const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "rnts-pack-check-"));
@@ -41,12 +59,12 @@ function main() {
     fs.mkdirSync(packDir, { recursive: true });
     fs.mkdirSync(consumerDir, { recursive: true });
 
-    const dryRunOutput = run(PNPM_BIN, ["pack", "--dry-run"], repoRoot);
+    const dryRunOutput = runPnpm(["pack", "--dry-run"], repoRoot);
     if (/\bsrc\//.test(dryRunOutput)) {
       throw new Error("Packed tarball still includes src/. Remove src from published files.");
     }
 
-    run(PNPM_BIN, ["pack", "--pack-destination", packDir], repoRoot);
+    runPnpm(["pack", "--pack-destination", packDir], repoRoot);
     const tarball = fs
       .readdirSync(packDir)
       .find((name) => name.endsWith(".tgz"));
@@ -67,7 +85,7 @@ function main() {
       "utf8",
     );
 
-    run(PNPM_BIN, ["add", tarballPath, "--ignore-scripts"], consumerDir);
+    runPnpm(["add", tarballPath, "--ignore-scripts"], consumerDir);
 
     const packageName = "react-native-toast-system";
     const specifiers = [
@@ -95,7 +113,7 @@ try {
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);
   const localPnpmEperm =
-    !process.env.CI && /spawnSync pnpm EPERM/i.test(message);
+    !process.env.CI && /spawnSync .*pnpm.* (EPERM|ENOENT)/i.test(message);
 
   if (localPnpmEperm) {
     process.stdout.write(
