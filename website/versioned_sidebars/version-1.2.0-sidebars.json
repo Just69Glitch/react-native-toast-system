@@ -5,9 +5,23 @@
       "label": "Getting Started",
       "items": [
         "GETTING_STARTED",
+        "GETTING_STARTED_QUICK_START_FASTEST_SETUP",
+        "ONBOARDING_01_BASIC_USAGE",
+        "ONBOARDING_02_MODAL_SUPPORT",
+        "ONBOARDING_03_BOTTOM_SHEET_SUPPORT",
+        "ONBOARDING_04_ADVANCED_ROUTING",
+        "ONBOARDING_05_TEMPLATES_GROUPING",
         "GETTING_STARTED_INSTALLATION",
         "GETTING_STARTED_RUNTIME_SETUP",
         "GETTING_STARTED_FIRST_TOAST"
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Decision Guide",
+      "items": [
+        "COMPARISON_POSITIONING",
+        "DX_IMPROVEMENTS_PLAN"
       ]
     },
     {
@@ -32,7 +46,14 @@
       "type": "category",
       "label": "Advanced Guides",
       "items": [
+        "DEMO_HOST_AWARE_FLOW",
         "ADVANCED_RECIPES",
+        "RECIPE_EXPO_ROUTER_INTEGRATION",
+        "RECIPE_REACT_NAVIGATION_MODALS",
+        "RECIPE_BOTTOM_SHEET_INTEGRATION",
+        "RECIPE_PROMISE_API_FLOWS",
+        "RECIPE_GLOBAL_ERROR_HANDLING",
+        "RECIPE_FORM_SUBMISSION_UX",
         "ADVANCED_HOSTS_SURFACES",
         "ADVANCED_FLOWS_INTERACTIONS"
       ]

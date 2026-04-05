@@ -8,26 +8,25 @@ slug: /getting-started
 
 > **Platform support (current):** iOS and Android only. Web is not officially supported yet and may be added in future releases.
 
-Use this section to go from install to first successful toast with minimal friction.
+Start here for the fastest path, then add only the layer your app needs.
 
-## Recommended Path
+## Fastest Path (Under 5 Minutes)
 
-1. [Installation](./GETTING_STARTED_INSTALLATION.md)
-2. [Runtime Setup](./GETTING_STARTED_RUNTIME_SETUP.md)
-3. [First Toast](./GETTING_STARTED_FIRST_TOAST.md)
+1. [Quick Start (Fastest Setup)](./GETTING_STARTED_QUICK_START_FASTEST_SETUP.md)
 
-## Media Placeholders
+## Progressive Layers (Standalone)
 
-Planned docs media for this section:
+1. [Basic usage](./ONBOARDING_01_BASIC_USAGE.md)
+2. [Add modal support](./ONBOARDING_02_MODAL_SUPPORT.md)
+3. [Add bottom sheet support](./ONBOARDING_03_BOTTOM_SHEET_SUPPORT.md)
+4. [Advanced routing](./ONBOARDING_04_ADVANCED_ROUTING.md)
+5. [Templates and grouping](./ONBOARDING_05_TEMPLATES_GROUPING.md)
 
-- Image placeholder: "Getting started flow diagram"
-- GIF placeholder: "First toast in under 60 seconds"
-- Video placeholder: "Provider + viewport setup walkthrough"
+## Reference Tracks (Optional)
 
-## Next
-
+- [Installation](./GETTING_STARTED_INSTALLATION.md)
+- [Runtime Setup](./GETTING_STARTED_RUNTIME_SETUP.md)
+- [First Toast](./GETTING_STARTED_FIRST_TOAST.md)
 - [Architecture Guide](./ARCHITECTURE.md)
 - [API Reference](./API_REFERENCE.md)
-- [Advanced Guides](./ADVANCED_RECIPES.md)
 - [Troubleshooting](./TROUBLESHOOTING.md)
-- [FAQ](./FAQ.md)
