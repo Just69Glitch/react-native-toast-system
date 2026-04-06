@@ -1,0 +1,68 @@
+# Utils and Facade Reference for LLMs
+
+Scope:
+- Public utility exports and internal host resolution helpers.
+
+Public utility exports:
+- src/utils/index.ts
+  - toast (global facade from core/global-bridge)
+  - TOAST_HOST_PRESETS
+  - createToastSystem
+  - createToastTemplates
+
+Internal utility helpers:
+- src/utils/toast-utils.ts
+- src/core/stack-helpers.ts
+
+Related docs:
+- docs/API_CONTROLLERS.md
+- docs/API_OPTIONS.md
+- docs/ADVANCED_FLOWS_INTERACTIONS.md
+
+## Public `toast` facade
+
+Controller methods:
+- show
+- success / error / warning / info / loading
+- promise
+- update
+- dismiss
+- dismissAll
+- dismissGroup
+- updateGroup
+- isVisible
+- host(hostId)
+
+Behavior:
+- host(...) returns host-scoped controller.
+- no active provider -> safe no-op + fallback ids + dev warnings.
+
+## Presets
+
+`TOAST_HOST_PRESETS` includes:
+- default
+- minimal
+- status
+- banner-heavy
+
+Use presets as baseline, then override per host config.
+
+## Typed utilities
+
+`createToastTemplates`:
+- typed template registry creation helper.
+
+`createToastSystem`:
+- returns typed ToastProvider, ToastHost, ToastViewport, useToast, toast, templates.
+- improves template-name safety for teams/design systems.
+
+## Internal helper categories
+
+toast-utils + stack-helpers handle:
+- interaction mode resolution
+- keyboard avoidance resolution
+- position/theme/direction resolution
+- gesture config normalization
+- stack sorting and split-by-position
+- rendered-window selection for classic/deck modes
+

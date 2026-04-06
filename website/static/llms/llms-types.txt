@@ -1,0 +1,80 @@
+# Types Reference for LLMs
+
+Scope:
+- Public type contracts and typed helper aliases.
+
+Primary files:
+- src/types/index.ts
+- src/types/toast-types.ts
+- src/types/internal.ts
+- src/core/system.tsx
+
+Primary docs:
+- docs/API_REFERENCE.md
+- docs/API_OPTIONS.md
+- docs/API_LIFECYCLE.md
+- docs/API_COMPONENTS.md
+- docs/API_CONTROLLERS.md
+
+## High-value public type groups
+
+Controllers and identity:
+- ToastController
+- ToastId
+- ToastOptions
+- ToastUpdateOptions
+- ToastPromiseOptions
+- CloseReason
+
+Host config and behavior:
+- ToastHostConfig
+- ToastHostProps
+- ToastViewportProps
+- ToastProviderProps
+- ToastHostPreset
+- ToastInteractionMode
+- ToastPriorityMode
+- ToastDedupeMode
+- ToastGroupBehavior
+
+Visual/layout behavior:
+- ToastTemplate
+- ToastVariant
+- ToastPosition
+- ToastTheme
+- ToastResolvedTheme
+- ToastDirection
+- ToastAnimationPreset
+- ToastAnimationConfig
+- ToastGestureConfig
+- ToastClassicGestureConfig
+- ToastDeckGestureConfig
+- ToastStackOverflowMode
+
+Callbacks/context:
+- ToastHostConfigChangeContext
+- ToastStackStateContext
+- ToastDismissAllAttemptContext
+- ToastDismissAllCompleteContext
+
+## Typed system helper types
+
+From src/core/system.tsx:
+- ToastTemplateMap
+- ToastTemplateNameFromMap<TTemplates>
+- TypedToastOptions<TTemplateName>
+- TypedToastUpdateOptions<TTemplateName>
+- TypedToastPromiseOptions<T, TTemplateName>
+- TypedToastController<TTemplateName>
+- TypedToastGlobal<TTemplateName>
+
+Use case:
+- Strong compile-time template-name constraints for large apps/design systems.
+
+## Contract reading rule
+
+For exact allowed values/default semantics:
+1. use docs/API_OPTIONS.md and docs/API_LIFECYCLE.md first
+2. confirm export availability in src/types/index.ts
+3. confirm runtime behavior in src/core/store.ts if needed
+

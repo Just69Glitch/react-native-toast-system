@@ -1,0 +1,99 @@
+# Core Runtime Reference for LLMs
+
+Scope:
+- Internal runtime behavior that powers public API.
+- Not a consumer import contract.
+
+Key files:
+- src/core/store.ts
+- src/core/global-bridge.ts
+- src/core/system.tsx
+- src/core/dx-warnings.ts
+- src/core/stack-helpers.ts
+- src/core/debug.ts
+- src/constants/toast-constants.ts
+
+## Global bridge
+
+File:
+- src/core/global-bridge.ts
+
+Role:
+- Exposes global `toast` controller facade.
+- Forwards to active provider-bound bridge.
+- Provides safe no-op/fallback behavior if provider not active.
+
+Important behavior:
+- before first provider mount -> warns as before-mount
+- after provider was mounted then missing -> warns as missing-provider
+- show-like calls return fallback ids when bridge is missing
+
+## Store
+
+File:
+- src/core/store.ts
+
+Role:
+- Source of truth for host state and toast records.
+- Creates controllers per host.
+- Applies dedupe/group/priority resolution.
+- Manages lifecycle timing and dismissal transitions.
+
+Core methods (bridge/controller path):
+- registerHost / unregisterHost
+- createController
+- show / update / dismiss
+- dismissAll / dismissGroup / updateGroup
+- isVisible
+- pauseTimer / resumeTimer
+
+Design intent:
+- Host-scoped operations to keep behavior predictable in multi-surface apps.
+- Single runtime model for hook and global APIs.
+
+## Typed system helper
+
+File:
+- src/core/system.tsx
+
+Role:
+- createToastTemplates: typed template registry creation.
+- createToastSystem: typed wrapper over same shared global runtime.
+
+Important note:
+- Typed `toast` returned by createToastSystem is still backed by shared global bridge.
+- It does not create an isolated runtime instance.
+
+## DX warnings
+
+File:
+- src/core/dx-warnings.ts
+
+Warnings:
+- bridge missing (before-mount / missing-provider)
+- host auto-created without explicit host mount
+- dedupe collision context
+
+Implementation detail:
+- warnOnce semantics in dev mode to avoid noisy logs.
+
+## Defaults and presets
+
+File:
+- src/constants/toast-constants.ts
+
+Includes:
+- DEFAULT_HOST_ID
+- DEFAULT_HOST_CONFIG
+- TOAST_HOST_PRESETS
+- TOAST_PRESET_MOTION
+
+Common defaults:
+- interactionMode: deck
+- duration: 4000
+- loading duration override: persistent
+- keyboardAvoidance: true
+- dedupeMode: reset
+- groupBehavior: stack-in-group
+- priorityMode: soft
+

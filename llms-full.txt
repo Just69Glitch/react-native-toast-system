@@ -1,0 +1,188 @@
+# react-native-toast-system - LLM Full Reference
+
+This file is for AI/agent onboarding and task execution in this repository.
+Use this with llms.txt for quick navigation.
+
+## 1) What this library is
+
+react-native-toast-system is a provider-owned, host-aware toast runtime for React Native.
+It is optimized for apps with multiple UI surfaces:
+- root screens
+- modals
+- sheets
+- nested navigation containers
+
+Core differentiator:
+- explicit host routing with one shared runtime model.
+
+## 2) Support and boundaries
+
+- Supported: iOS, Android
+- Not officially supported: Web
+- Public contract: package root exports and documented subpath exports
+- Avoid relying on `src/internal` implementation details in consumer code
+
+## 3) Public API map
+
+Root exports (src/index.ts):
+- Components:
+  - ToastProvider
+  - ToastHost
+  - ToastViewport (alias of ToastHost)
+  - ToastNativeSurfaceBoundary
+  - ToastVariantIcon
+  - ToastDismissIconButton
+- Hook:
+  - useToast(hostId?)
+- Global utilities:
+  - toast
+  - TOAST_HOST_PRESETS
+  - createToastSystem
+  - createToastTemplates
+- Types:
+  - full set under src/types and typed helpers from src/core/system.tsx
+
+Subpath exports (package.json):
+- react-native-toast-system/components
+- react-native-toast-system/hooks
+- react-native-toast-system/providers
+- react-native-toast-system/utils
+- react-native-toast-system/types
+
+## 4) Runtime architecture
+
+Main flow:
+1. ToastProvider mounts and creates ToastStore.
+2. ToastProvider binds global bridge (toast facade -> active store).
+3. Commands come from `toast` global or `useToast(hostId?)`.
+4. Store resolves host + dedupe + grouping + priority.
+5. ToastHost/ToastViewport renders host-scoped stacks.
+6. Dismiss/update callbacks flow through same runtime.
+
+Key files:
+- src/providers/toast-provider.tsx
+- src/core/global-bridge.ts
+- src/core/store.ts
+- src/components/toast-host.tsx
+- src/constants/toast-constants.ts
+
+## 5) Host model and routing rules
+
+- Default host id: `default`
+- `toast.*` routes to active provider default host unless `toast.host("...")`.
+- `useToast(hostId?)` returns host-bound controller.
+- Host IDs are exact strings.
+
+Guidance:
+- Mount one root viewport for baseline.
+- Mount extra hosts for modal/sheet/local surfaces.
+- Use `ToastNativeSurfaceBoundary` where native surface boundaries can hide overlays.
+
+## 6) Behavioral primitives
+
+Identity and dedupe:
+- id
+- dedupeKey
+- dedupeMode: reset | replace | ignore | bump
+
+Flow grouping:
+- groupId
+- groupBehavior: replace-in-group | update-in-group | stack-in-group
+
+Ordering:
+- priority
+- host priorityMode: soft | strict
+
+Async:
+- toast.promise(...) with loading/success/error/finally
+
+## 7) DX safeguards (dev-time warnings)
+
+Warnings are emitted once per key in dev runtime:
+- missing provider / before mount bridge calls
+- host auto-created without explicit host mount
+- dedupe collision diagnostics
+
+File:
+- src/core/dx-warnings.ts
+
+## 8) Core docs index
+
+Positioning / getting started:
+- README.md
+- docs/GETTING_STARTED.md
+- docs/GETTING_STARTED_QUICK_START_FASTEST_SETUP.md
+- docs/ONBOARDING_01_BASIC_USAGE.md
+- docs/ONBOARDING_02_MODAL_SUPPORT.md
+- docs/ONBOARDING_03_BOTTOM_SHEET_SUPPORT.md
+- docs/ONBOARDING_04_ADVANCED_ROUTING.md
+- docs/ONBOARDING_05_TEMPLATES_GROUPING.md
+
+API contracts:
+- docs/API_REFERENCE.md
+- docs/API_COMPONENTS.md
+- docs/API_CONTROLLERS.md
+- docs/API_OPTIONS.md
+- docs/API_LIFECYCLE.md
+
+Architecture and troubleshooting:
+- docs/ARCHITECTURE.md
+- docs/TROUBLESHOOTING.md
+- docs/FAQ.md
+
+Advanced recipes:
+- docs/ADVANCED_RECIPES.md
+- docs/ADVANCED_HOSTS_SURFACES.md
+- docs/ADVANCED_FLOWS_INTERACTIONS.md
+- docs/RECIPE_EXPO_ROUTER_INTEGRATION.md
+- docs/RECIPE_REACT_NAVIGATION_MODALS.md
+- docs/RECIPE_BOTTOM_SHEET_INTEGRATION.md
+- docs/RECIPE_PROMISE_API_FLOWS.md
+- docs/RECIPE_GLOBAL_ERROR_HANDLING.md
+- docs/RECIPE_FORM_SUBMISSION_UX.md
+
+Positioning and DX:
+- docs/COMPARISON_POSITIONING.md
+- docs/DX_IMPROVEMENTS_PLAN.md
+
+Demo flow:
+- docs/DEMO_HOST_AWARE_FLOW.md
+- docs/assets/*.gif
+
+Maintainer docs:
+- docs/maintainers/RELEASING.md
+- docs/maintainers/VERSIONING.md
+- docs/maintainers/EXPO_DEMO_PUBLISHING.md
+- docs/maintainers/ANDROID_DEMO_CAPTURE.md
+- docs/maintainers/DEPLOY_GITHUB_PAGES.md
+- docs/maintainers/GROWTH_DISTRIBUTION_PLAN.md
+
+## 9) Test and validation workflow
+
+Primary:
+- pnpm run typecheck
+- pnpm run test
+- pnpm run build
+
+Example app:
+- pnpm run example:install
+- pnpm run example:validate
+- pnpm run example:start
+
+Docs:
+- pnpm run docs:check
+- pnpm run docs:install
+- pnpm run docs:build
+
+Release readiness:
+- pnpm run validate:release
+
+## 10) Editing guardrails for agents
+
+- Keep public API backward-compatible unless explicitly requested.
+- Prefer docs/examples/DX updates over architectural rewrites.
+- Preserve host-aware behavior and explicit routing semantics.
+- Do not remove provider/bridge safety behavior.
+- Keep examples dependency-light (prefer native fetch over extra HTTP clients).
+- Update both current docs and versioned docs when docs policy requires sync.
+

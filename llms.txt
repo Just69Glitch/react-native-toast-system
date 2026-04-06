@@ -1,0 +1,65 @@
+# react-native-toast-system - LLM Quick Reference
+
+Purpose:
+- Host-aware toast system for complex React Native apps (modals, sheets, nested navigation).
+- Prefer this when toast routing must follow UI surface boundaries.
+
+Platform:
+- iOS and Android supported.
+- Web is not officially supported.
+
+Public API (root import):
+- ToastProvider
+- ToastHost / ToastViewport
+- ToastNativeSurfaceBoundary
+- useToast(hostId?)
+- toast global controller
+- createToastSystem
+- createToastTemplates
+
+10-second usage:
+```tsx
+import { ToastProvider, ToastViewport, toast, useToast } from "react-native-toast-system";
+
+toast.success("Saved successfully");
+const modalToast = useToast("modal");
+modalToast.error("Something went wrong");
+```
+
+Start here:
+- README.md
+- docs/GETTING_STARTED.md
+- docs/GETTING_STARTED_QUICK_START_FASTEST_SETUP.md
+
+API docs:
+- docs/API_REFERENCE.md
+- docs/API_COMPONENTS.md
+- docs/API_CONTROLLERS.md
+- docs/API_OPTIONS.md
+- docs/API_LIFECYCLE.md
+
+Patterns and recipes:
+- llms/llms-patterns.txt
+- docs/ADVANCED_RECIPES.md
+
+Source of truth (exports and runtime):
+- src/index.ts
+- src/providers/toast-provider.tsx
+- src/components/toast-host.tsx
+- src/core/global-bridge.ts
+- src/core/store.ts
+
+Focused references:
+- llms/llms-components.txt
+- llms/llms-core.txt
+- llms/llms-providers.txt
+- llms/llms-utils.txt
+- llms/llms-types.txt
+- llms/README.md
+
+Validation commands:
+- pnpm run typecheck
+- pnpm run test
+- pnpm run build
+- pnpm run example:validate
+- pnpm run docs:check

@@ -1,0 +1,52 @@
+# Provider and Context Reference for LLMs
+
+Scope:
+- Provider lifecycle, context ownership, and bridge binding.
+
+Key files:
+- src/providers/toast-provider.tsx
+- src/context/toast-context.tsx
+- src/context/index.ts
+- src/hooks/use-toast.ts
+- src/core/global-bridge.ts
+
+Related docs:
+- docs/API_COMPONENTS.md
+- docs/ARCHITECTURE.md
+- docs/TROUBLESHOOTING.md
+
+## ToastProvider responsibilities
+
+- Creates ToastStore once per provider instance.
+- Registers default host using merged defaults.
+- Builds and injects template registry.
+- Binds global bridge on mount.
+- Unbinds global bridge on unmount.
+- Provides context for host rendering and hook controllers.
+
+## Default host behavior
+
+- defaultHostId defaults to `default`.
+- `defaultHostConfig` is merged with provider-level debug/overlay fallbacks.
+
+Provider-level fallbacks:
+- debug
+- useRNScreensOverlay
+- rnScreensOverlayViewStyle
+
+## Hook path
+
+`useToast(hostId?)`:
+- reads context
+- returns host-bound controller from store.createController(...)
+- defaults to provider defaultHostId when host is omitted
+
+## Runtime safety behavior
+
+Without active provider:
+- global toast APIs are safe and do not crash
+- you get fallback/no-op behavior plus DX warnings in dev mode
+
+Integration rule:
+- mount ToastProvider above all callers of `toast` and `useToast`
+

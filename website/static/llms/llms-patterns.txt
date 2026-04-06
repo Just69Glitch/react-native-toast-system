@@ -1,0 +1,168 @@
+# Common Patterns and Recipes for LLMs
+
+Use this file for implementation-level examples and decision shortcuts.
+
+Primary docs:
+- docs/GETTING_STARTED_QUICK_START_FASTEST_SETUP.md
+- docs/ONBOARDING_01_BASIC_USAGE.md
+- docs/ONBOARDING_02_MODAL_SUPPORT.md
+- docs/ONBOARDING_03_BOTTOM_SHEET_SUPPORT.md
+- docs/ONBOARDING_04_ADVANCED_ROUTING.md
+- docs/ONBOARDING_05_TEMPLATES_GROUPING.md
+- docs/ADVANCED_HOSTS_SURFACES.md
+- docs/ADVANCED_FLOWS_INTERACTIONS.md
+- docs/ADVANCED_RECIPES.md
+- docs/RECIPE_*.md
+
+## Pattern 1: Baseline root toast
+
+When:
+- App only needs one global host.
+
+Minimal:
+```tsx
+<ToastProvider>
+  <AppScreen />
+  <ToastViewport />
+</ToastProvider>
+```
+```tsx
+toast.success("Saved successfully");
+```
+
+## Pattern 2: Modal-scoped toast
+
+When:
+- Action happens in modal and feedback must render there.
+
+Minimal:
+```tsx
+const modalToast = useToast("modal");
+modalToast.error("Something went wrong");
+```
+```tsx
+<ToastHost hostId="modal" />
+```
+
+## Pattern 3: Bottom-sheet scoped toast
+
+When:
+- Sheet interaction should not route to root host.
+
+Minimal:
+```tsx
+toast.host("sheet").show({ title: "Sheet-scoped toast" });
+```
+```tsx
+<ToastHost hostId="sheet" />
+```
+
+## Pattern 4: Advanced host routing
+
+When:
+- Nested/feature-local channels are needed.
+
+Example:
+```tsx
+toast.host("feature/nested").show({ title: "Nested host toast" });
+<ToastHost hostId="feature/nested" />
+```
+
+## Pattern 5: Dedupe protection
+
+When:
+- Same event can fire multiple times (retry spam, repeated taps).
+
+Example:
+```tsx
+toast.show({
+  title: "Sync running",
+  dedupeKey: "sync-main",
+  dedupeMode: "ignore",
+});
+```
+
+## Pattern 6: Grouped flow updates
+
+When:
+- One process should evolve in place.
+
+Example:
+```tsx
+toast.show({
+  groupId: "sync:main",
+  groupBehavior: "update-in-group",
+  title: "Sync started",
+  persistent: true,
+});
+
+toast.show({
+  groupId: "sync:main",
+  groupBehavior: "update-in-group",
+  title: "Sync complete",
+  variant: "success",
+});
+```
+
+## Pattern 7: Promise lifecycle
+
+When:
+- Async API call needs loading -> success/error lifecycle.
+
+Example:
+```tsx
+await toast.promise(saveRequest(), {
+  loading: { title: "Saving..." },
+  success: { title: "Saved" },
+  error: (err) => ({ title: "Save failed", description: String(err) }),
+});
+```
+
+## Pattern 8: Controller ref in surface boundary
+
+When:
+- Hooks are awkward in dynamic boundary composition.
+
+Example:
+```tsx
+const controllerRef = useRef<ToastController | null>(null);
+<ToastHost hostId="sheet" controllerRef={controllerRef} />
+controllerRef.current?.show({ title: "Boundary trigger" });
+```
+
+## Pattern 9: Keyboard-safe bottom toasts
+
+When:
+- Bottom toasts overlap keyboard.
+
+Example:
+```tsx
+<ToastProvider defaultHostConfig={{ keyboardAvoidance: true, keyboardOffset: 8 }}>
+  <ToastViewport />
+</ToastProvider>
+```
+
+## Pattern 10: Typed template system
+
+When:
+- Teams need strict template-name typing.
+
+Example:
+```tsx
+const { ToastProvider, ToastViewport, toast } = createToastSystem({
+  templates: {
+    appDefault: ({ context }) => <MyTemplate context={context} />,
+  },
+});
+toast.show({ template: "appDefault" });
+```
+
+## Recipe lookup table
+
+- Expo Router integration: docs/RECIPE_EXPO_ROUTER_INTEGRATION.md
+- React Navigation + modals: docs/RECIPE_REACT_NAVIGATION_MODALS.md
+- Bottom-sheet integration: docs/RECIPE_BOTTOM_SHEET_INTEGRATION.md
+- Promise API flow: docs/RECIPE_PROMISE_API_FLOWS.md
+- Global error handling: docs/RECIPE_GLOBAL_ERROR_HANDLING.md
+- Form submission UX: docs/RECIPE_FORM_SUBMISSION_UX.md
+

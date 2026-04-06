@@ -1,0 +1,107 @@
+# Components Reference for LLMs
+
+Scope:
+- Public component exports and practical usage.
+
+Primary source files:
+- src/components/index.ts
+- src/components/toast-host.tsx
+- src/providers/toast-provider.tsx
+- src/overlays/native-surface-boundary.tsx
+
+Primary docs:
+- docs/API_COMPONENTS.md
+- docs/API_OPTIONS.md
+- docs/ADVANCED_HOSTS_SURFACES.md
+
+## ToastProvider
+
+File:
+- src/providers/toast-provider.tsx
+
+Role:
+- Owns ToastStore lifecycle.
+- Registers default host.
+- Binds/unbinds global toast bridge.
+- Injects template registry through context.
+
+Key props:
+- defaultHostId
+- defaultHostConfig
+- templates
+- debug
+- useRNScreensOverlay
+- rnScreensOverlayViewStyle
+
+## ToastHost / ToastViewport
+
+File:
+- src/components/toast-host.tsx
+
+Role:
+- Renders host-scoped stack.
+- Registers/unregisters host in store.
+- Supports interactionMode:
+  - deck (default)
+  - classic
+
+Behavior highlights:
+- keyboard-aware layout
+- top and bottom stack splits
+- host-local config merge
+- controllerRef binding
+- optional RN Screens overlay rendering
+
+Important props:
+- hostId
+- interactionMode
+- config
+- controllerRef
+- useRNScreensOverlay
+- rnScreensOverlayViewStyle
+
+Note:
+- ToastViewport is an alias for ToastHost.
+
+## ToastNativeSurfaceBoundary
+
+File:
+- src/overlays/native-surface-boundary.tsx
+
+Role:
+- Boundary wrapper for native/modal/sheet surfaces where gesture roots and overlays can differ.
+
+Use when:
+- toasts appear behind modal/sheet
+- gesture activation fails inside native surface boundary
+
+## ToastVariantIcon
+
+File:
+- src/components/toast-icons.tsx
+
+Role:
+- Renders variant icon for default templates.
+- Supports success/error/warning/info/loading/default visuals.
+
+## ToastDismissIconButton
+
+File:
+- src/components/toast-icons.tsx
+
+Role:
+- Built-in dismiss button used by templates.
+- Accessible press target with optional press in/out callbacks.
+
+## Integration patterns
+
+Root-only baseline:
+1. Mount ToastProvider at app root.
+2. Mount one ToastViewport.
+3. Trigger with toast.success(...) or useToast().
+
+Modal/sheet host:
+1. Mount ToastHost hostId="modal" (or sheet) inside that surface.
+2. Trigger with useToast("modal") or toast.host("modal").
+3. Wrap boundary with ToastNativeSurfaceBoundary when needed.
+
