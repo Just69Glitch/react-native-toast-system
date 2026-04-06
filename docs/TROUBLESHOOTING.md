@@ -69,6 +69,16 @@ Use this document as an operational debugging guide for real app integration iss
   2. Tune `keyboardOffset` for your screen layout.
   3. Validate on real target devices and keyboard modes.
 
+
+### Symptom: Updating `defaultHostConfig` changes default-host toasts but not other mounted hosts
+
+- Cause:
+  - Library version does not include automatic mounted-host re-resolution after runtime default-host config changes.
+  - Cached package build is still using older store behavior.
+- Fix:
+  1. Upgrade to `react-native-toast-system@1.2.4` or newer.
+  2. Restart Metro/dev server with cache clear to ensure latest package build is active.
+  3. Keep local host overrides only for intentional differences; inherited defaults will update automatically.
 ### Symptom: Promise toast remains in loading state
 
 - Cause:
@@ -164,3 +174,4 @@ Current confidence status:
 - run `pnpm run example:validate`
 - run `pnpm run example:start` and verify startup logs
 - execute manual protocols for modal, sheet, keyboard, navigation persistence, host targeting, promise flows, theme, and RTL
+

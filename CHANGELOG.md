@@ -18,6 +18,17 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 - _No unreleased entries yet._
 
+## [1.2.4] - 2026-04-06
+
+### Fixed
+
+- Mounted non-default hosts now automatically re-resolve when `ToastProvider.defaultHostConfig` changes at runtime (for example theme/direction toggles), so inherited defaults stay in sync without per-host workarounds.
+- Default-host propagation now uses the latest runtime default-host baseline instead of only constructor-time baseline values.
+
+### Changed
+
+- Docs now clarify runtime default-host config propagation behavior in API components and troubleshooting guidance.
+
 ## [1.2.3] - 2026-04-06
 
 ### Added
@@ -98,3 +109,6 @@ Versioning: [Semantic Versioning](https://semver.org/)
 ### Notes
 
 - Integration-heavy scenarios (including RTL/device-specific verification) currently include manual-protocol validation paths documented in repository guides.
+
+
+
