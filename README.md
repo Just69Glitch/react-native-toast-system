@@ -48,9 +48,9 @@ Most toast libraries assume one root host. Real apps do not.
 Scan the QR to open the in-repo example update.
 
 <!-- expo-demo:start -->
-<img src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=exp%3A%2F%2Fu.expo.dev%2F3809a530-4f74-45b2-bb25-7a8a6e8672f4%2Fgroup%2F45d81021-eb82-407e-9973-f3478cd40f85" alt="Expo Demo QR" width="220" />
+<img src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=exp%3A%2F%2Fu.expo.dev%2F3809a530-4f74-45b2-bb25-7a8a6e8672f4%2Fgroup%2Fce9a0051-0eb8-4bb2-9a21-ab0a1ce2ca1f" alt="Expo Demo QR" width="220" />
 
-`exp://u.expo.dev/3809a530-4f74-45b2-bb25-7a8a6e8672f4/group/45d81021-eb82-407e-9973-f3478cd40f85`
+`exp://u.expo.dev/3809a530-4f74-45b2-bb25-7a8a6e8672f4/group/ce9a0051-0eb8-4bb2-9a21-ab0a1ce2ca1f`
 <!-- expo-demo:end -->
 
 ## 45-second demo flow
