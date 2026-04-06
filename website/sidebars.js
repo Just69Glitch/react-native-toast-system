@@ -23,6 +23,11 @@ module.exports = {
     },
     {
       type: "category",
+      label: "AI and Agents",
+      items: ["AI_AGENT_GUIDE"],
+    },
+    {
+      type: "category",
       label: "Core Concepts",
       items: ["ARCHITECTURE"],
     },

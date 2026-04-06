@@ -65,9 +65,17 @@ Caption: Root success, modal error, sheet warning, deduped retries, promise load
 
 - Full script + recording plan: [docs/DEMO_HOST_AWARE_FLOW.md](./docs/DEMO_HOST_AWARE_FLOW.md)
 
+## AI and Agent References
+
+- Quick reference: [llms.txt](./llms.txt)
+- Full reference: [llms-full.txt](./llms-full.txt)
+- Focused references index: [llms/README.md](./llms/README.md)
+- Docs page: [docs/AI_AGENT_GUIDE.md](./docs/AI_AGENT_GUIDE.md)
+
 ## Quick Links
 
 - Docs site: <https://just69glitch.github.io/react-native-toast-system/>
+- AI agent guide: [docs/AI_AGENT_GUIDE.md](./docs/AI_AGENT_GUIDE.md)
 - Demo script: [docs/DEMO_HOST_AWARE_FLOW.md](./docs/DEMO_HOST_AWARE_FLOW.md)
 - Decision guide: [docs/COMPARISON_POSITIONING.md](./docs/COMPARISON_POSITIONING.md)
 - Getting Started: [docs/GETTING_STARTED.md](./docs/GETTING_STARTED.md)

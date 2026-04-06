@@ -18,6 +18,10 @@ const featureCards = [
     title: "Compatibility Guidance",
     body: "Step-by-step setup details for React Native + Expo teams, including runtime setup and troubleshooting.",
   },
+  {
+    title: "AI Agent References",
+    body: "LLM-focused quick, full, and task-scoped references help coding agents navigate the codebase safely.",
+  },
 ];
 
 const demoClips = [
@@ -141,6 +145,9 @@ export default function Home() {
             </li>
             <li>
               <Link to="/docs/demo/host-aware-flow">Host-Aware Demo Flow</Link>
+            </li>
+            <li>
+              <Link to="/docs/ai-agent-guide">AI Agent Guide</Link>
             </li>
             <li>
               <Link to="/docs/troubleshooting">Troubleshooting</Link>
