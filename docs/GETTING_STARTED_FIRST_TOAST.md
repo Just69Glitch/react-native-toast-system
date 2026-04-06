@@ -1,4 +1,4 @@
----
+﻿---
 title: First Toast
 slug: /getting-started/first-toast
 ---
@@ -56,11 +56,12 @@ Both APIs route through the same provider-owned runtime.
 - Root-level toast appears and dismisses correctly.
 - Global and hook APIs resolve to the same default host.
 
-## Media Placeholders
+## Visual Check
 
-- Image placeholder: "First toast success state"
-- GIF placeholder: "Global toast and hook toast interactions"
-- Video placeholder: "First toast end-to-end demo"
+Expected first-flow behavior:
+
+<img src="./assets/root-success.gif" alt="First toast success preview" width="260" />
+<img src="./assets/promise-success.gif" alt="Promise lifecycle preview" width="260" />
 
 ## Next
 

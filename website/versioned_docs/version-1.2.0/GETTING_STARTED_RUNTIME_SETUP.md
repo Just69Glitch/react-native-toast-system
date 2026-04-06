@@ -1,4 +1,4 @@
----
+﻿---
 title: Runtime Setup
 slug: /getting-started/runtime-setup
 ---
@@ -47,11 +47,12 @@ export function AppRoot() {
 - Add extra hosts only for explicit isolated surfaces (`modal-host`, `sheet-host`).
 - Mount each host inside the visual surface where it should render.
 
-## Media Placeholders
+## Visual Check
 
-- Image placeholder: "Provider and host placement diagram"
-- GIF placeholder: "Root setup with viewport"
-- Video placeholder: "Host placement in modal and nested surfaces"
+Host-aware routing across layered surfaces should behave like this:
+
+<img src={require("./assets/modal-host.gif").default} alt="Modal host toast preview" width="160" />
+<img src={require("./assets/sheet-host.gif").default} alt="Sheet host toast preview" width="160" />
 
 ## Next
 

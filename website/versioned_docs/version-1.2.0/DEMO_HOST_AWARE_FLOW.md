@@ -1,8 +1,7 @@
----
+﻿---
 title: Demo Script - 45-Second Host-Aware Flow
 slug: /demo/host-aware-flow
 ---
-
 
 # Demo Script - 45-Second Host-Aware Flow
 
@@ -39,11 +38,59 @@ Checkout confirmation flow across layered UI surfaces:
 - [ ] Bottom-positioned toast avoids keyboard overlap.
 - [ ] Closing layered surfaces does not break root host toasts.
 
-## README-Ready Demo Section
-
 ## Short Caption (GIF/Video)
 
 Root success, modal error, sheet warning, deduped retries, promise loading-to-success, and keyboard-safe bottom toast in 45 seconds.
+
+## Captured Clips
+
+### Root host success
+
+<img src={require("./assets/root-success.gif").default} alt="Root host success" width="170" />
+
+### Light theme preview
+
+<img src={require("./assets/light-theme-preview.gif").default} alt="Light theme preview" width="170" />
+
+### RTL Arabic preview
+
+<img src={require("./assets/rtl-preview.gif").default} alt="RTL Arabic preview" width="170" />
+
+### Modal host scoped toast
+
+<img src={require("./assets/modal-host.gif").default} alt="Modal host scoped toast" width="170" />
+
+### Sheet host scoped toast
+
+<img src={require("./assets/sheet-host.gif").default} alt="Sheet host scoped toast" width="170" />
+
+### Keyboard-aware bottom placement
+
+<img src={require("./assets/keyboard-bottom.gif").default} alt="Keyboard-aware bottom placement" width="170" />
+
+### Action buttons
+
+<img src={require("./assets/actions-preview.gif").default} alt="Action buttons" width="170" />
+
+### Dedupe ignore
+
+<img src={require("./assets/dedupe-ignore.gif").default} alt="Dedupe ignore" width="170" />
+
+### Promise lifecycle
+
+<img src={require("./assets/promise-success.gif").default} alt="Promise lifecycle" width="170" />
+
+### Long content wrapping
+
+<img src={require("./assets/long-content.gif").default} alt="Long content wrapping" width="170" />
+
+### Group update flow
+
+<img src={require("./assets/group-update.gif").default} alt="Group update flow" width="170" />
+
+### Programmatic loading to success
+
+<img src={require("./assets/programmatic-loading.gif").default} alt="Programmatic loading to success" width="170" />
 
 ## Optional Shot List
 

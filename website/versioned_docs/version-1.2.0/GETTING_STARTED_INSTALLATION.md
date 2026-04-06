@@ -1,4 +1,4 @@
----
+﻿---
 title: Installation
 slug: /getting-started/installation
 ---
@@ -88,11 +88,11 @@ import { useToast } from "react-native-toast-system/hooks";
 import { toast } from "react-native-toast-system/utils";
 ```
 
-## Media Placeholders
+## Visual Check
 
-- Image placeholder: "Install matrix by package manager"
-- GIF placeholder: "Add package and run first typecheck"
-- Video placeholder: "Peer dependency setup walkthrough"
+After install and runtime setup, your first success path should look like this:
+
+<img src={require("./assets/root-success.gif").default} alt="Root success toast preview" width="180" />
 
 ## Next
 

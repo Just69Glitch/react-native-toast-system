@@ -43,14 +43,6 @@ Most toast libraries assume one root host. Real apps do not.
 - Bottom sheets can clip, overlap, or hide global toasts.
 - Nested navigation can make root-only toast placement feel disconnected from the active UI.
 
-## 45-second demo flow
-
-One scenario, six behaviors: root toast, modal toast, bottom-sheet toast, dedupe, promise lifecycle, and keyboard-safe bottom placement.
-
-Caption: Root success, modal error, sheet warning, deduped retries, promise loading-to-success, and keyboard-aware bottom toast in one continuous flow.
-
-- Full script + recording plan: [docs/DEMO_HOST_AWARE_FLOW.md](./docs/DEMO_HOST_AWARE_FLOW.md)
-
 ## Live Expo Demo
 
 Scan the QR to open the in-repo example update.
@@ -60,6 +52,18 @@ Scan the QR to open the in-repo example update.
 
 `exp://u.expo.dev/3809a530-4f74-45b2-bb25-7a8a6e8672f4/group/45d81021-eb82-407e-9973-f3478cd40f85`
 <!-- expo-demo:end -->
+
+## 45-second demo flow
+
+One scenario, six behaviors: root toast, modal toast, bottom-sheet toast, dedupe, promise lifecycle, and keyboard-safe bottom placement.
+
+<img src="./docs/gifs/root-success.gif" alt="Root success preview" width="200" />
+<img src="./docs/gifs/modal-host.gif" alt="Modal host preview" width="200" />
+<img src="./docs/gifs/sheet-host.gif" alt="Sheet host preview" width="200" />
+
+Caption: Root success, modal error, sheet warning, deduped retries, promise loading-to-success, and keyboard-aware bottom toast in one continuous flow.
+
+- Full script + recording plan: [docs/DEMO_HOST_AWARE_FLOW.md](./docs/DEMO_HOST_AWARE_FLOW.md)
 
 ## Quick Links
 

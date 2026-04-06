@@ -1,4 +1,4 @@
----
+﻿---
 title: Demo Script - 45-Second Host-Aware Flow
 slug: /demo/host-aware-flow
 ---
@@ -42,6 +42,56 @@ Checkout confirmation flow across layered UI surfaces:
 ## Short Caption (GIF/Video)
 
 Root success, modal error, sheet warning, deduped retries, promise loading-to-success, and keyboard-safe bottom toast in 45 seconds.
+
+## Captured Clips
+
+### Root host success
+
+<img src="./assets/root-success.gif" alt="Root host success" width="170" />
+
+### Light theme preview
+
+<img src="./assets/light-theme-preview.gif" alt="Light theme preview" width="170" />
+
+### RTL Arabic preview
+
+<img src="./assets/rtl-preview.gif" alt="RTL Arabic preview" width="170" />
+
+### Modal host scoped toast
+
+<img src="./assets/modal-host.gif" alt="Modal host scoped toast" width="170" />
+
+### Sheet host scoped toast
+
+<img src="./assets/sheet-host.gif" alt="Sheet host scoped toast" width="170" />
+
+### Keyboard-aware bottom placement
+
+<img src="./assets/keyboard-bottom.gif" alt="Keyboard-aware bottom placement" width="170" />
+
+### Action buttons
+
+<img src="./assets/actions-preview.gif" alt="Action buttons" width="170" />
+
+### Dedupe ignore
+
+<img src="./assets/dedupe-ignore.gif" alt="Dedupe ignore" width="170" />
+
+### Promise lifecycle
+
+<img src="./assets/promise-success.gif" alt="Promise lifecycle" width="170" />
+
+### Long content wrapping
+
+<img src="./assets/long-content.gif" alt="Long content wrapping" width="170" />
+
+### Group update flow
+
+<img src="./assets/group-update.gif" alt="Group update flow" width="170" />
+
+### Programmatic loading to success
+
+<img src="./assets/programmatic-loading.gif" alt="Programmatic loading to success" width="170" />
 
 ## Optional Shot List
 
