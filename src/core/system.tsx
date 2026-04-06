@@ -22,7 +22,10 @@ export type ToastTemplateNameFromMap<TTemplates extends ToastTemplateMap> =
   | ToastTemplate
   | Extract<keyof TTemplates, string>;
 
-export type TypedToastOptions<TTemplateName extends string> = Omit<ToastOptions, "template"> & {
+export type TypedToastOptions<TTemplateName extends string> = Omit<
+  ToastOptions,
+  "template"
+> & {
   template?: TTemplateName;
 };
 
@@ -64,11 +67,17 @@ export type TypedToastController<TTemplateName extends string> = {
     options: TypedToastPromiseOptions<T, TTemplateName>,
     commonOptions?: Partial<TypedToastOptions<TTemplateName>>,
   ) => Promise<T>;
-  update: (id: ToastId, options: TypedToastUpdateOptions<TTemplateName>) => boolean;
+  update: (
+    id: ToastId,
+    options: TypedToastUpdateOptions<TTemplateName>,
+  ) => boolean;
   dismiss: (id: ToastId, reason?: CloseReason) => boolean;
   dismissAll: (reason?: CloseReason) => void;
   dismissGroup: (groupId: string, reason?: CloseReason) => number;
-  updateGroup: (groupId: string, options: TypedToastUpdateOptions<TTemplateName>) => number;
+  updateGroup: (
+    groupId: string,
+    options: TypedToastUpdateOptions<TTemplateName>,
+  ) => number;
   isVisible: (id: ToastId) => boolean;
 };
 
@@ -94,9 +103,9 @@ export function createToastTemplates<const TTemplates extends ToastTemplateMap>(
   >;
 }
 
-export function createToastSystem<const TTemplates extends ToastTemplateMap = {}>(config?: {
-  templates?: TTemplates;
-}) {
+export function createToastSystem<
+  const TTemplates extends ToastTemplateMap = {},
+>(config?: { templates?: TTemplates }) {
   type TemplateName = ToastTemplateNameFromMap<TTemplates>;
 
   const resolvedTemplates = createToastTemplateRegistry(
@@ -111,18 +120,21 @@ export function createToastSystem<const TTemplates extends ToastTemplateMap = {}
     const context = useToastContext();
 
     return useMemo(() => {
-      const controller = context.store.createController(hostId ?? context.defaultHostId);
+      const controller = context.store.createController(
+        hostId ?? context.defaultHostId,
+      );
       return castController<TemplateName>(controller);
     }, [context.defaultHostId, context.store, hostId]);
   }
 
-  // Typed facade only:
-  // this does not create an isolated runtime toast instance.
-  // The returned `toast` still uses the shared global bridge bound by ToastProvider.
   const toast = globalToast as unknown as TypedToastGlobal<TemplateName>;
 
-  return { ToastProvider, ToastHost, ToastViewport, useToast, toast, templates: resolvedTemplates };
+  return {
+    ToastProvider,
+    ToastHost,
+    ToastViewport,
+    useToast,
+    toast,
+    templates: resolvedTemplates,
+  };
 }
-
-
-

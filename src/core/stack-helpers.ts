@@ -7,9 +7,15 @@ import type {
 } from "../types/internal";
 import { resolvePriorityValue } from "../utils/toast-utils";
 
-export type StableStackLayoutItem = { toast: ToastRecord; stackIndex: number; zIndex: number };
+export type StableStackLayoutItem = {
+  toast: ToastRecord;
+  stackIndex: number;
+  zIndex: number;
+};
 
-type ClosingLayerCacheRef = { current: Map<string, { stackIndex: number; zIndex: number }> };
+type ClosingLayerCacheRef = {
+  current: Map<string, { stackIndex: number; zIndex: number }>;
+};
 
 export function sortToastsByPriorityAndOrder(
   toasts: ToastRecord[],
@@ -95,9 +101,14 @@ export function getRenderedToasts(
   overflowMode: ToastStackOverflowMode,
   overflowBuffer: number,
 ): ToastRecord[] {
-  const softLimit = overflowMode === "clip" ? maxVisible : maxVisible + Math.max(1, overflowBuffer);
+  const softLimit =
+    overflowMode === "clip"
+      ? maxVisible
+      : maxVisible + Math.max(1, overflowBuffer);
 
-  return toasts.filter((toast, index) => index < softLimit || toast.lifecycle.isClosing);
+  return toasts.filter(
+    (toast, index) => index < softLimit || toast.lifecycle.isClosing,
+  );
 }
 
 export function resolveStackOpacity(
@@ -160,24 +171,34 @@ export function resolveStackTranslate(
   const sign = position === "bottom" ? 1 : -1;
   const normalDepth = Math.max(0, index - 1);
   const overflowDepth = Math.max(0, index - maxVisible + 1);
-  const normalOffset = normalDepth * (stackOverlap * (overflowMode === "compact" ? 0.24 : 0.14));
+  const normalOffset =
+    normalDepth * (stackOverlap * (overflowMode === "compact" ? 0.24 : 0.14));
   const overflowOffset =
     overflowDepth * (stackOverlap * (overflowMode === "compact" ? 0.52 : 0.25));
 
   return sign * (normalOffset + overflowOffset);
 }
 
-export function isExpandDirection(position: ToastPosition, translationY: number): boolean {
+export function isExpandDirection(
+  position: ToastPosition,
+  translationY: number,
+): boolean {
   "worklet";
   return position === "top" ? translationY > 0 : translationY < 0;
 }
 
-export function isDismissAllDirection(position: ToastPosition, translationY: number): boolean {
+export function isDismissAllDirection(
+  position: ToastPosition,
+  translationY: number,
+): boolean {
   "worklet";
   return position === "top" ? translationY < 0 : translationY > 0;
 }
 
-export function isCollapseDirection(position: ToastPosition, translationY: number): boolean {
+export function isCollapseDirection(
+  position: ToastPosition,
+  translationY: number,
+): boolean {
   "worklet";
   return position === "top" ? translationY < 0 : translationY > 0;
 }
@@ -197,8 +218,6 @@ export function resolveCollapsedDeckTranslate(
 }
 
 function resolveCollapsedDeckMinimumPeek(stackOverlap: number): number {
-  // Keep a small guaranteed reveal while still letting stackOverlap shape
-  // the collapsed depth feel.
   return Math.max(6, Math.min(10, Math.round(stackOverlap * 0.8)));
 }
 
@@ -217,7 +236,8 @@ export function resolveCollapsedDeckMeasuredTranslates(
   const resolved: Record<string, number> = { [stacked[0].toast.id]: 0 };
 
   const frontHeight = measuredHeightsById[stacked[0].toast.id];
-  let previousHeight = Number.isFinite(frontHeight) && frontHeight > 0 ? frontHeight : null;
+  let previousHeight =
+    Number.isFinite(frontHeight) && frontHeight > 0 ? frontHeight : null;
   let previousMagnitude = 0;
 
   for (let index = 1; index < stacked.length; index += 1) {
@@ -234,7 +254,10 @@ export function resolveCollapsedDeckMeasuredTranslates(
     let magnitude = baseMagnitude;
 
     if (previousHeight !== null && currentHeight !== null) {
-      const minimumSpacing = Math.max(0, previousHeight - currentHeight + minimumPeekPx);
+      const minimumSpacing = Math.max(
+        0,
+        previousHeight - currentHeight + minimumPeekPx,
+      );
       magnitude = Math.max(baseMagnitude, previousMagnitude + minimumSpacing);
     }
 
@@ -316,15 +339,18 @@ export function getStableStackLayout(
   const assignedZIndex = new Set<number>(reservedClosingZIndex);
 
   return toasts.map((toast, index) => {
-    const computedZIndex = resolveToastZIndex(index, toasts.length, hostConfig, toast.zIndex);
+    const computedZIndex = resolveToastZIndex(
+      index,
+      toasts.length,
+      hostConfig,
+      toast.zIndex,
+    );
     const cachedClosingLayer = closingLayerCacheRef.current.get(toast.id);
 
     let stableStackIndex = index;
     let stableZIndex = computedZIndex;
 
     if (toast.lifecycle.isClosing) {
-      // Keep closing toasts on a frozen layer so neighboring reorders don't cause
-      // overlap flicker during exit animations.
       if (cachedClosingLayer) {
         stableStackIndex = cachedClosingLayer.stackIndex;
         stableZIndex = cachedClosingLayer.zIndex;
@@ -343,7 +369,9 @@ export function getStableStackLayout(
 
       while (assignedZIndex.has(stableZIndex)) {
         stableZIndex +=
-          hostConfig.layering === "older-on-top" ? hostConfig.zIndexStep : -hostConfig.zIndexStep;
+          hostConfig.layering === "older-on-top"
+            ? hostConfig.zIndexStep
+            : -hostConfig.zIndexStep;
       }
 
       assignedZIndex.add(stableZIndex);
@@ -356,7 +384,10 @@ export function getStableStackLayout(
 function resolveToastZIndex(
   index: number,
   total: number,
-  hostConfig: Pick<ResolvedToastHostConfig, "zIndexBase" | "zIndexStep" | "layering">,
+  hostConfig: Pick<
+    ResolvedToastHostConfig,
+    "zIndexBase" | "zIndexStep" | "layering"
+  >,
   override?: number,
 ): number {
   if (typeof override === "number") {
@@ -369,5 +400,3 @@ function resolveToastZIndex(
 
   return hostConfig.zIndexBase + (total - index) * hostConfig.zIndexStep;
 }
-
-

@@ -878,7 +878,6 @@ function ToastItemImpl(props: ToastItemProps) {
     translateX,
   ]);
 
-  // Interaction mode switches the dismiss axis without changing template/layout concerns.
   const activeGesture =
     interactionMode === "deck" ? horizontalPanGesture : verticalPanGesture;
 

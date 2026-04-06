@@ -457,8 +457,6 @@ function DeckToastStack({
   }, [expanded, queueAutoCollapse]);
 
   const pauseExpandedTimers = useCallback(() => {
-    // Deck-expanded mode intentionally pauses every visible timer so list browsing
-    // cannot race auto-dismiss while the user is interacting.
     for (const toast of toasts) {
       if (toast.lifecycle.isClosing || pausedByHostRef.current.has(toast.id)) {
         continue;
@@ -520,7 +518,6 @@ function DeckToastStack({
         return false;
       }
 
-      // Custom confirmation callback is fully app-controlled.
       try {
         const result = dismissAllBehavior.confirm(context);
         return typeof (result as Promise<boolean>)?.then === "function"
@@ -706,8 +703,10 @@ function DeckToastStack({
     };
   }, []);
 
-  const expandGestureConfig = resolveDeckCollapsedExpandGestureConfig(hostConfig);
-  const dismissAllGestureConfig = resolveDeckCollapsedDismissAllGestureConfig(hostConfig);
+  const expandGestureConfig =
+    resolveDeckCollapsedExpandGestureConfig(hostConfig);
+  const dismissAllGestureConfig =
+    resolveDeckCollapsedDismissAllGestureConfig(hostConfig);
   const collapseHandleGestureConfig =
     resolveDeckCollapseHandleGestureConfig(hostConfig);
 
@@ -823,10 +822,10 @@ function DeckToastStack({
     return Gesture.Pan()
       .enabled(
         interactionMode === "deck" &&
-        expanded &&
-        expandedWindowStacked.length > 0 &&
-        hostConfig.deckGesture.enabled &&
-        collapseHandleGestureConfig.enabled,
+          expanded &&
+          expandedWindowStacked.length > 0 &&
+          hostConfig.deckGesture.enabled &&
+          collapseHandleGestureConfig.enabled,
       )
       .activeOffsetY([-8, 8])
       .failOffsetX([-24, 24])
@@ -1228,7 +1227,9 @@ export function ToastHost({
     : host.config.keyboardOffset;
 
   const topResolvedKeyboardHeight =
-    resolvedInteractionMode === "deck" && topKeyboardAvoidance ? keyboardHeight : 0;
+    resolvedInteractionMode === "deck" && topKeyboardAvoidance
+      ? keyboardHeight
+      : 0;
   const bottomResolvedKeyboardHeight = bottomKeyboardAvoidance
     ? keyboardHeight
     : 0;
@@ -1237,10 +1238,7 @@ export function ToastHost({
     <View
       pointerEvents="box-none"
       className={host.config.className}
-      style={[
-        StyleSheet.absoluteFill,
-        host.config.style,
-      ]}
+      style={[StyleSheet.absoluteFill, host.config.style]}
     >
       <ToastStack
         position="top"
