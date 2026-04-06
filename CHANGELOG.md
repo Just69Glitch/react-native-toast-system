@@ -27,6 +27,8 @@ Versioning: [Semantic Versioning](https://semver.org/)
 - Real-world recipe docs for Expo Router integration, React Navigation modals, bottom sheet integration, promise API flows, global error handling, and form submission UX.
 - Runtime DX warnings helper (`src/core/dx-warnings.ts`) with dev-time diagnostics for missing provider/before-mount bridge calls, host auto-creation fallback, and dedupe collisions.
 - Test setup guard (`tests/setup.ts`) to keep DX warnings muted in normal test output while allowing opt-in debug visibility.
+- Automated Android capture pipeline for the example app with deterministic queue playback, deep-link auto-start, callback/logcat completion signaling, and marker-based clip splitting.
+- Capture demo assets and docs media set: 12 generated GIF segments now stored in `docs/assets` and surfaced across demo/getting-started content.
 
 ### Changed
 
@@ -35,6 +37,8 @@ Versioning: [Semantic Versioning](https://semver.org/)
 - Versioned docs (`website/versioned_docs/version-1.2.0`) and versioned sidebar were synchronized with current docs updates without introducing a new docs version entry.
 - Test command defaults now use verbose Vitest output with clearer per-test visibility; release validation uses retry-aware test execution.
 - Expo demo README updater now writes markdown-safe image markup and has safer group-id fallback resolution logic.
+- Docs website homepage now includes demo clip previews, and getting-started/demo docs now embed real GIF captures instead of placeholder media blocks.
+- Auto-capture artifact layout is now flattened per run (`raw/`, `videos/`, `gifs/`, `segments/`, `meta/`) for easier browsing and publishing.
 
 ## [1.2.1] - 2026-04-04
 
