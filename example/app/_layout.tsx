@@ -80,7 +80,10 @@ function RootLayoutContent() {
           <ToastProvider defaultHostConfig={defaultHostConfig}>
             <Stack screenOptions={{ headerShown: false }}>
               <Stack.Screen name="(drawer)" />
-              <Stack.Screen name="capture-demo" options={{ animation: "none" }} />
+              <Stack.Screen
+                name="capture-demo"
+                options={{ animation: "none" }}
+              />
             </Stack>
             <StatusBar
               style={colorScheme === "dark" ? "light" : "dark"}

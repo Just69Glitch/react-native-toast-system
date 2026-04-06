@@ -17,47 +17,38 @@ const screenEntries = [
 
 export default function DrawerLayout() {
   const preferences = useAppPreferences();
-  const toastTheme = preferences?.themeMode ?? "auto";
-  const toastDirection = preferences?.toastDirection ?? "auto";
 
   const secondaryHostConfig = useMemo(
     () => ({
       preset: "status" as const,
       position: "top" as const,
-      theme: toastTheme,
-      direction: toastDirection,
     }),
-    [toastTheme, toastDirection],
+    [],
   );
 
   const nestedHostConfig = useMemo(
     () => ({
       preset: "minimal" as const,
       position: "bottom" as const,
-      theme: toastTheme,
-      direction: toastDirection,
     }),
-    [toastTheme, toastDirection],
+    [],
   );
 
   const nestedRtlHostConfig = useMemo(
     () => ({
       preset: "minimal" as const,
       position: "bottom" as const,
-      theme: toastTheme,
       direction: "rtl" as const,
     }),
-    [toastTheme, toastDirection],
+    [],
   );
 
   const classicHostConfig = useMemo(
     () => ({
       preset: "default" as const,
       position: "bottom" as const,
-      theme: toastTheme,
-      direction: toastDirection,
     }),
-    [toastTheme, toastDirection],
+    [],
   );
 
   return (

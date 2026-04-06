@@ -17,8 +17,6 @@ import { useAppPreferences } from "@/hooks/use-app-preferences";
 export default function HostsScreen() {
   const { secondaryToast, classicToast } = useDrawerPlaygroundHelpers();
   const preferences = useAppPreferences();
-  const toastTheme = preferences?.themeMode ?? "auto";
-  const toastDirection = preferences?.toastDirection ?? "auto";
   const [modalVisible, setModalVisible] = useState(false);
   const [sheetVisible, setSheetVisible] = useState(false);
   return (
@@ -128,8 +126,6 @@ export default function HostsScreen() {
                 config={{
                   preset: "status",
                   position: "top",
-                  theme: toastTheme,
-                  direction: toastDirection,
                 }}
               />
             </View>
@@ -198,8 +194,6 @@ export default function HostsScreen() {
                 config={{
                   preset: "minimal",
                   position: "top",
-                  theme: toastTheme,
-                  direction: toastDirection,
                 }}
               />
             </View>
