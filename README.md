@@ -57,9 +57,9 @@ Scan the QR to open the in-repo example update.
 
 One scenario, six behaviors: root toast, modal toast, bottom-sheet toast, dedupe, promise lifecycle, and keyboard-safe bottom placement.
 
-<img src="./docs/gifs/root-success.gif" alt="Root success preview" width="200" />
-<img src="./docs/gifs/modal-host.gif" alt="Modal host preview" width="200" />
-<img src="./docs/gifs/sheet-host.gif" alt="Sheet host preview" width="200" />
+<img src="./docs/assets/root-success.gif" alt="Root success preview" width="200" />
+<img src="./docs/assets/modal-host.gif" alt="Modal host preview" width="200" />
+<img src="./docs/assets/sheet-host.gif" alt="Sheet host preview" width="200" />
 
 Caption: Root success, modal error, sheet warning, deduped retries, promise loading-to-success, and keyboard-aware bottom toast in one continuous flow.
 
