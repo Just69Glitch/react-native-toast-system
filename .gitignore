@@ -35,3 +35,4 @@ website/.cache/
 .smoke/
 
 example/.expo/
+/artifacts

@@ -5,7 +5,7 @@ import {
 } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import * as Font from "expo-font";
-import { Stack } from "expo-router";
+import { Stack, usePathname } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useMemo, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -61,6 +61,8 @@ export default function RootLayout() {
 
 function RootLayoutContent() {
   const colorScheme = useColorScheme();
+  const pathname = usePathname();
+  const isCaptureRoute = pathname === "/capture-demo";
   const preferences = useAppPreferences();
   const toastTheme = preferences?.themeMode ?? "auto";
   const toastDirection = preferences?.toastDirection ?? "auto";
@@ -78,10 +80,14 @@ function RootLayoutContent() {
           <ToastProvider defaultHostConfig={defaultHostConfig}>
             <Stack screenOptions={{ headerShown: false }}>
               <Stack.Screen name="(drawer)" />
+              <Stack.Screen name="capture-demo" options={{ animation: "none" }} />
             </Stack>
-            <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
+            <StatusBar
+              style={colorScheme === "dark" ? "light" : "dark"}
+              hidden={isCaptureRoute}
+            />
             <ToastViewport />
-            <PreferencesBubble />
+            {!isCaptureRoute ? <PreferencesBubble /> : null}
           </ToastProvider>
         </ThemeProvider>
       </SafeAreaProvider>
