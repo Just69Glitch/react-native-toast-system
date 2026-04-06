@@ -18,6 +18,20 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 - _No unreleased entries yet._
 
+## [1.2.3] - 2026-04-06
+
+### Added
+
+- AI/agent reference docs set with canonical root entries (`llms.txt`, `llms-full.txt`) plus focused references for components, patterns, core runtime, providers, utils, and types under `llms/`.
+- New docs page `AI_AGENT_GUIDE` (current docs and `version-1.2.0`) with task-based mapping and direct plain-text endpoints for all LLM reference files.
+- Static plain-text publishing path for agent references at `website/static/llms/*` so docs users can open raw files directly without docs UI framing.
+
+### Changed
+
+- README now includes a dedicated "AI and Agent References" section and quick links to the LLM reference entry points.
+- Docs navigation now includes an "AI and Agents" category and homepage visibility for agent-reference onboarding.
+- Versioned docs sidebar (`version-1.2.0`) was synchronized to include the new AI/agent guide page.
+
 ## [1.2.2] - 2026-04-05
 
 ### Added
