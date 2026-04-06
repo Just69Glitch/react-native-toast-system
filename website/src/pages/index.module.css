@@ -90,6 +90,59 @@
   grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
 }
 
+.demoBlock {
+  margin-top: 1.8rem;
+}
+
+.demoHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.demoTitle {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.demoGrid {
+  margin-top: 0.85rem;
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.demoCard {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 0.9rem;
+  padding: 0.55rem;
+}
+
+[data-theme="dark"] .demoCard {
+  background: rgba(9, 17, 32, 0.74);
+  border-color: rgba(169, 201, 255, 0.26);
+}
+
+.demoImage {
+  width: 100%;
+  border-radius: 0.65rem;
+  display: block;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+}
+
+[data-theme="dark"] .demoImage {
+  border-color: rgba(169, 201, 255, 0.26);
+}
+
+.demoLabel {
+  margin: 0.45rem 0 0;
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
 .card {
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid rgba(15, 23, 42, 0.12);

@@ -20,6 +20,34 @@ const featureCards = [
   },
 ];
 
+const demoClips = [
+  {
+    title: "Root Success",
+    src: "img/preview/root-success.gif",
+    alt: "Root host success toast preview",
+  },
+  {
+    title: "Light Theme",
+    src: "img/preview/light-theme-preview.gif",
+    alt: "Light theme toast preview",
+  },
+  {
+    title: "RTL Preview",
+    src: "img/preview/rtl-preview.gif",
+    alt: "RTL Arabic toast preview",
+  },
+  {
+    title: "Modal Host",
+    src: "img/preview/modal-host.gif",
+    alt: "Modal host scoped toast preview",
+  },
+  {
+    title: "Sheet Host",
+    src: "img/preview/sheet-host.gif",
+    alt: "Sheet host scoped toast preview",
+  },
+];
+
 export default function Home() {
   const logoSrc = useBaseUrl("img/branding/logo.png");
 
@@ -78,6 +106,28 @@ export default function Home() {
               </article>
             ))}
           </div>
+
+          <div className={styles.demoBlock}>
+            <div className={styles.demoHeader}>
+              <h2 className={styles.demoTitle}>Demo Clips</h2>
+              <Link to="/docs/demo/host-aware-flow">
+                Open full 12-clip flow
+              </Link>
+            </div>
+            <div className={styles.demoGrid}>
+              {demoClips.map((clip) => (
+                <article key={clip.title} className={styles.demoCard}>
+                  <img
+                    src={useBaseUrl(clip.src)}
+                    alt={clip.alt}
+                    className={styles.demoImage}
+                    loading="lazy"
+                  />
+                  <p className={styles.demoLabel}>{clip.title}</p>
+                </article>
+              ))}
+            </div>
+          </div>
         </section>
 
         <section className={styles.quickLinks}>
@@ -88,6 +138,9 @@ export default function Home() {
             </li>
             <li>
               <Link to="/docs/advanced-guides">Advanced Guides</Link>
+            </li>
+            <li>
+              <Link to="/docs/demo/host-aware-flow">Host-Aware Demo Flow</Link>
             </li>
             <li>
               <Link to="/docs/troubleshooting">Troubleshooting</Link>
