@@ -22,14 +22,17 @@ function readVersions() {
 function printUsage() {
   console.log("Usage:");
   console.log("  pnpm run docs:version -- <version>");
+  console.log("  pnpm run docs:version -- <version> --allow-patch");
   console.log("  pnpm run docs:version -- --list");
   console.log("");
   console.log("Examples:");
   console.log("  pnpm run docs:version -- 1.1.0");
+  console.log("  pnpm run docs:version -- 1.2.1 --allow-patch");
   console.log("  pnpm run docs:version -- 1.2.0-beta.1");
 }
 
 const args = process.argv.slice(2);
+const allowPatch = args.includes("--allow-patch");
 if (args.includes("--list")) {
   const versions = readVersions();
   if (versions.length === 0) {
@@ -40,7 +43,7 @@ if (args.includes("--list")) {
   process.exit(0);
 }
 
-const version = args[0];
+const version = args.find((value) => !value.startsWith("--"));
 if (!version) {
   printUsage();
   process.exit(1);
@@ -49,6 +52,20 @@ if (!version) {
 if (!/^\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$/.test(version)) {
   console.error(
     `Invalid version "${version}". Use semver-like values such as 1.1.0 or 1.2.0-beta.1.`
+  );
+  process.exit(1);
+}
+
+const semverCoreMatch = version.match(/^(\d+)\.(\d+)\.(\d+)/);
+if (!semverCoreMatch) {
+  console.error(`Could not parse semver core from "${version}".`);
+  process.exit(1);
+}
+
+const patch = Number(semverCoreMatch[3]);
+if (Number.isFinite(patch) && patch > 0 && !allowPatch) {
+  console.error(
+    `Patch docs version "${version}" was blocked by policy. Use the existing minor-line docs (for example 1.2.0 as the 1.2.x channel), or pass --allow-patch if you intentionally need a new patch snapshot.`
   );
   process.exit(1);
 }

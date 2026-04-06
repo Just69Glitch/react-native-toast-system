@@ -91,3 +91,4 @@ Manual checks:
 
 - The workflow is intentionally manual (`workflow_dispatch`) so maintainers can review before sharing.
 - No npm publish is required for demo updates.
+- For local Android screen capture automation (emulator or phone), see `docs/maintainers/ANDROID_DEMO_CAPTURE.md`.

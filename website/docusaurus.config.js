@@ -60,6 +60,9 @@ const config = {
               label: "Next",
               path: "next",
             },
+            "1.2.0": {
+              label: "1.2.x",
+            },
           },
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl:

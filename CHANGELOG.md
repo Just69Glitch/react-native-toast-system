@@ -39,6 +39,8 @@ Versioning: [Semantic Versioning](https://semver.org/)
 - Expo demo README updater now writes markdown-safe image markup and has safer group-id fallback resolution logic.
 - Docs website homepage now includes demo clip previews, and getting-started/demo docs now embed real GIF captures instead of placeholder media blocks.
 - Auto-capture artifact layout is now flattened per run (`raw/`, `videos/`, `gifs/`, `segments/`, `meta/`) for easier browsing and publishing.
+- Docs version dropdown now labels the existing `1.2.0` snapshot as `1.2.x` to represent a minor-line docs channel without creating patch snapshots.
+- `scripts/docs-version.js` now blocks patch docs versions by default and requires explicit `--allow-patch` override when a patch snapshot is intentionally needed.
 
 ## [1.2.1] - 2026-04-04
 
