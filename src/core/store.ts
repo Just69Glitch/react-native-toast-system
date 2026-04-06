@@ -1,5 +1,9 @@
 import { EXIT_FALLBACK_BUFFER_MS } from "../constants/toast-constants";
-import { createToastDebugLogger, getToastDebugMeta, getToastRecordDebugMeta } from "./debug";
+import {
+  createToastDebugLogger,
+  getToastDebugMeta,
+  getToastRecordDebugMeta,
+} from "./debug";
 import { warnDedupeCollision, warnHostAutoCreated } from "./dx-warnings";
 import type {
   CloseReason,
@@ -71,7 +75,12 @@ export class ToastStore implements ToastStoreBridge {
 
   readonly defaultHostId: string;
 
-  private readonly baseHostConfig: ResolvedToastHostConfig;
+  private baseHostConfig: ResolvedToastHostConfig;
+
+  private hostRegistrations = new Map<
+    string,
+    { config?: ToastHostConfig; interactionMode: ToastInteractionMode }
+  >();
 
   constructor({
     defaultHostId,
@@ -106,12 +115,25 @@ export class ToastStore implements ToastStoreBridge {
     config?: ToastHostConfig,
     interactionMode: ToastInteractionMode = "deck",
   ): void {
+    this.hostRegistrations.set(hostId, { config, interactionMode });
+
     const prevHost = this.state.hosts[hostId];
+
+    const liveDefaultConfig =
+      this.state.hosts[this.defaultHostId]?.config ?? this.baseHostConfig;
+
+    const baseForHost =
+      hostId === this.defaultHostId ? this.baseHostConfig : liveDefaultConfig;
+
     const nextConfig = this.mergeHostConfig(
-      prevHost?.config ?? this.baseHostConfig,
+      baseForHost,
       config,
       interactionMode,
     );
+
+    if (hostId === this.defaultHostId) {
+      this.baseHostConfig = nextConfig;
+    }
 
     if (!prevHost) {
       const nextHost: ToastHostState = {
@@ -165,9 +187,15 @@ export class ToastStore implements ToastStoreBridge {
     });
 
     this.enforceHostHardLimit(hostId);
+
+    if (hostId === this.defaultHostId) {
+      this.reapplyDefaultHostToMountedHosts();
+    }
   }
 
   unregisterHost(hostId: string): void {
+    this.hostRegistrations.delete(hostId);
+
     const host = this.state.hosts[hostId];
     if (!host) {
       return;
@@ -193,9 +221,11 @@ export class ToastStore implements ToastStoreBridge {
     return {
       hostId,
       show: (options) => this.show(options, hostId),
-      success: (options) => this.show(toVariantOptions(options, "success"), hostId),
+      success: (options) =>
+        this.show(toVariantOptions(options, "success"), hostId),
       error: (options) => this.show(toVariantOptions(options, "error"), hostId),
-      warning: (options) => this.show(toVariantOptions(options, "warning"), hostId),
+      warning: (options) =>
+        this.show(toVariantOptions(options, "warning"), hostId),
       info: (options) => this.show(toVariantOptions(options, "info"), hostId),
       loading: (options) =>
         this.show(
@@ -203,12 +233,12 @@ export class ToastStore implements ToastStoreBridge {
             persistent: true,
             duration: "persistent",
           }),
-          hostId
+          hostId,
         ),
       promise: async <T>(
         promise: Promise<T>,
         options: ToastPromiseOptions<T>,
-        commonOptions?: Partial<ToastOptions>
+        commonOptions?: Partial<ToastOptions>,
       ): Promise<T> => {
         const resolvedHostId = options.hostId ?? hostId;
         const promiseDefaults: Partial<ToastOptions> = {
@@ -221,21 +251,39 @@ export class ToastStore implements ToastStoreBridge {
           ...promiseDefaults,
           ...commonOptions,
         };
-        const loadingOptions = this.withCommonOptions(options.loading, mergedCommonOptions);
-        const id = this.loading({ ...loadingOptions, hostId: resolvedHostId }, resolvedHostId);
+        const loadingOptions = this.withCommonOptions(
+          options.loading,
+          mergedCommonOptions,
+        );
+        const id = this.loading(
+          { ...loadingOptions, hostId: resolvedHostId },
+          resolvedHostId,
+        );
 
         try {
           const value = await promise;
           if (options.success) {
             const successOptions =
-              typeof options.success === "function" ? options.success(value) : options.success;
-            const normalizedSuccess = this.withCommonOptions(successOptions, mergedCommonOptions);
-            this.update(id, {
-              ...normalizedSuccess,
-              variant: normalizedSuccess.variant ?? "success",
-              persistent: false,
-              duration: normalizedSuccess.duration ?? mergedCommonOptions.duration ?? 3000,
-            }, resolvedHostId);
+              typeof options.success === "function"
+                ? options.success(value)
+                : options.success;
+            const normalizedSuccess = this.withCommonOptions(
+              successOptions,
+              mergedCommonOptions,
+            );
+            this.update(
+              id,
+              {
+                ...normalizedSuccess,
+                variant: normalizedSuccess.variant ?? "success",
+                persistent: false,
+                duration:
+                  normalizedSuccess.duration ??
+                  mergedCommonOptions.duration ??
+                  3000,
+              },
+              resolvedHostId,
+            );
           } else {
             this.dismiss(id, "programmatic", resolvedHostId);
           }
@@ -248,14 +296,26 @@ export class ToastStore implements ToastStoreBridge {
         } catch (error) {
           if (options.error) {
             const errorOptions =
-              typeof options.error === "function" ? options.error(error) : options.error;
-            const normalizedError = this.withCommonOptions(errorOptions, mergedCommonOptions);
-            this.update(id, {
-              ...normalizedError,
-              variant: normalizedError.variant ?? "error",
-              persistent: false,
-              duration: normalizedError.duration ?? mergedCommonOptions.duration ?? 4500,
-            }, resolvedHostId);
+              typeof options.error === "function"
+                ? options.error(error)
+                : options.error;
+            const normalizedError = this.withCommonOptions(
+              errorOptions,
+              mergedCommonOptions,
+            );
+            this.update(
+              id,
+              {
+                ...normalizedError,
+                variant: normalizedError.variant ?? "error",
+                persistent: false,
+                duration:
+                  normalizedError.duration ??
+                  mergedCommonOptions.duration ??
+                  4500,
+              },
+              resolvedHostId,
+            );
           } else {
             this.dismiss(id, "programmatic", resolvedHostId);
           }
@@ -270,8 +330,10 @@ export class ToastStore implements ToastStoreBridge {
       update: (id, options) => this.update(id, options, hostId),
       dismiss: (id, reason) => this.dismiss(id, reason, hostId),
       dismissAll: (reason) => this.dismissAll(hostId, reason),
-      dismissGroup: (groupId, reason) => this.dismissGroup(groupId, hostId, reason),
-      updateGroup: (groupId, options) => this.updateGroup(groupId, options, hostId),
+      dismissGroup: (groupId, reason) =>
+        this.dismissGroup(groupId, hostId, reason),
+      updateGroup: (groupId, options) =>
+        this.updateGroup(groupId, options, hostId),
       isVisible: (id) => this.isVisible(id, hostId),
     };
   };
@@ -355,7 +417,9 @@ export class ToastStore implements ToastStoreBridge {
       variant,
       persistent:
         options.persistent ??
-        (variant === "loading" && options.duration === undefined ? true : undefined),
+        (variant === "loading" && options.duration === undefined
+          ? true
+          : undefined),
       createdAt: now,
       updatedAt: now,
       order: ++this.orderCounter,
@@ -393,7 +457,7 @@ export class ToastStore implements ToastStoreBridge {
       bump?: boolean;
       reopenIfClosing?: boolean;
       reason?: CloseReason;
-    }
+    },
   ): boolean => {
     const location = this.findToast(id, hostIdHint);
     if (!location) {
@@ -458,7 +522,10 @@ export class ToastStore implements ToastStoreBridge {
       this.scheduleAutoDismiss(location.hostId, refreshedLocation.toast);
     }
 
-    this.safeInvokeCallback(nextToast.onUpdate, this.createCallbackContext(nextToast, nextReason));
+    this.safeInvokeCallback(
+      nextToast.onUpdate,
+      this.createCallbackContext(nextToast, nextReason),
+    );
     this.debug(location.hostId, "update:applied", {
       id,
       reason: nextReason,
@@ -470,8 +537,15 @@ export class ToastStore implements ToastStoreBridge {
     return true;
   };
 
-  dismiss = (id: ToastId, reason: CloseReason = "dismiss", hostIdHint?: string): boolean => {
-    this.debug(hostIdHint ?? this.defaultHostId, "dismiss:request", { id, reason });
+  dismiss = (
+    id: ToastId,
+    reason: CloseReason = "dismiss",
+    hostIdHint?: string,
+  ): boolean => {
+    this.debug(hostIdHint ?? this.defaultHostId, "dismiss:request", {
+      id,
+      reason,
+    });
     return this.beginClose(id, reason, hostIdHint);
   };
 
@@ -493,7 +567,7 @@ export class ToastStore implements ToastStoreBridge {
   dismissGroup = (
     groupId: string,
     hostId?: string,
-    reason: CloseReason = "dismiss"
+    reason: CloseReason = "dismiss",
   ): number => {
     const locations = this.findToastsByGroup(groupId, hostId);
     let dismissed = 0;
@@ -514,7 +588,11 @@ export class ToastStore implements ToastStoreBridge {
     return dismissed;
   };
 
-  updateGroup = (groupId: string, options: ToastUpdateOptions, hostId?: string): number => {
+  updateGroup = (
+    groupId: string,
+    options: ToastUpdateOptions,
+    hostId?: string,
+  ): number => {
     const locations = this.findToastsByGroup(groupId, hostId);
     let updated = 0;
     for (const location of locations) {
@@ -557,8 +635,6 @@ export class ToastStore implements ToastStoreBridge {
     }
 
     if (timerState.paused) {
-      // Nested pauses are reference-counted so multiple interactions (press + drag)
-      // can safely pause the same auto-dismiss timer without racing resumes.
       this.timers.set(key, {
         ...timerState,
         pauseCount: timerState.pauseCount + 1,
@@ -597,12 +673,14 @@ export class ToastStore implements ToastStoreBridge {
 
     const nextPauseCount = Math.max(0, timerState.pauseCount - 1);
     if (nextPauseCount > 0) {
-      // Keep timer paused until all pause sources release.
       this.timers.set(key, {
         ...timerState,
         pauseCount: nextPauseCount,
       });
-      this.debug(location.hostId, "timer:resume-deferred", { id, pauseCount: nextPauseCount });
+      this.debug(location.hostId, "timer:resume-deferred", {
+        id,
+        pauseCount: nextPauseCount,
+      });
       return;
     }
 
@@ -635,16 +713,25 @@ export class ToastStore implements ToastStoreBridge {
     this.updateHost(location.hostId, (host) => {
       return {
         ...host,
-        toasts: host.toasts.map((toast) => (toast.id === id ? nextToast : toast)),
+        toasts: host.toasts.map((toast) =>
+          toast.id === id ? nextToast : toast,
+        ),
       };
     });
 
-    this.safeInvokeCallback(nextToast.onMount, this.createCallbackContext(nextToast));
+    this.safeInvokeCallback(
+      nextToast.onMount,
+      this.createCallbackContext(nextToast),
+    );
   }
 
   notifyOpen(id: ToastId, hostIdHint?: string): void {
     const location = this.findToast(id, hostIdHint);
-    if (!location || location.toast.lifecycle.visible || location.toast.lifecycle.isClosing) {
+    if (
+      !location ||
+      location.toast.lifecycle.visible ||
+      location.toast.lifecycle.isClosing
+    ) {
       return;
     }
 
@@ -659,11 +746,16 @@ export class ToastStore implements ToastStoreBridge {
     this.updateHost(location.hostId, (host) => {
       return {
         ...host,
-        toasts: host.toasts.map((toast) => (toast.id === id ? nextToast : toast)),
+        toasts: host.toasts.map((toast) =>
+          toast.id === id ? nextToast : toast,
+        ),
       };
     });
 
-    this.safeInvokeCallback(nextToast.onOpen, this.createCallbackContext(nextToast));
+    this.safeInvokeCallback(
+      nextToast.onOpen,
+      this.createCallbackContext(nextToast),
+    );
   }
 
   notifyPress(id: ToastId, hostIdHint?: string): void {
@@ -672,7 +764,10 @@ export class ToastStore implements ToastStoreBridge {
       return;
     }
 
-    this.safeInvokeCallback(location.toast.onPress, this.createCallbackContext(location.toast, "press"));
+    this.safeInvokeCallback(
+      location.toast.onPress,
+      this.createCallbackContext(location.toast, "press"),
+    );
 
     const shouldDismiss = location.toast.dismissOnPress ?? false;
     if (shouldDismiss) {
@@ -680,7 +775,11 @@ export class ToastStore implements ToastStoreBridge {
     }
   }
 
-  notifyActionPress(id: ToastId, actionIndex: number, hostIdHint?: string): void {
+  notifyActionPress(
+    id: ToastId,
+    actionIndex: number,
+    hostIdHint?: string,
+  ): void {
     const location = this.findToast(id, hostIdHint);
     if (!location) {
       return;
@@ -696,8 +795,10 @@ export class ToastStore implements ToastStoreBridge {
       hostId: location.hostId,
       action,
       actionIndex,
-      dismiss: (reason?: CloseReason) => this.dismiss(id, reason ?? "action", location.hostId),
-      update: (options: ToastUpdateOptions) => this.update(id, options, location.hostId),
+      dismiss: (reason?: CloseReason) =>
+        this.dismiss(id, reason ?? "action", location.hostId),
+      update: (options: ToastUpdateOptions) =>
+        this.update(id, options, location.hostId),
     };
 
     try {
@@ -713,12 +814,19 @@ export class ToastStore implements ToastStoreBridge {
 
     this.safeInvokeCallback(location.toast.onActionPress, context);
 
-    if ((action.dismissOnPress ?? true) && this.resolveDismissible(location.toast, location.host.config)) {
+    if (
+      (action.dismissOnPress ?? true) &&
+      this.resolveDismissible(location.toast, location.host.config)
+    ) {
       this.beginClose(id, "action", location.hostId);
     }
   }
 
-  completeClose(id: ToastId, hostIdHint?: string, reasonOverride?: CloseReason): boolean {
+  completeClose(
+    id: ToastId,
+    hostIdHint?: string,
+    reasonOverride?: CloseReason,
+  ): boolean {
     const location = this.findToast(id, hostIdHint);
     if (!location) {
       this.debug(hostIdHint ?? this.defaultHostId, "close:complete-missing", {
@@ -767,7 +875,7 @@ export class ToastStore implements ToastStoreBridge {
 
   private withCommonOptions(
     value: string | ToastOptions,
-    commonOptions?: Partial<ToastOptions>
+    commonOptions?: Partial<ToastOptions>,
   ): ToastOptions {
     const normalized = normalizeShowOptions(value);
     return {
@@ -777,7 +885,10 @@ export class ToastStore implements ToastStoreBridge {
     };
   }
 
-  private findDedupeTarget(host: ToastHostState, options: ToastOptions): ToastRecord | undefined {
+  private findDedupeTarget(
+    host: ToastHostState,
+    options: ToastOptions,
+  ): ToastRecord | undefined {
     if (options.id) {
       return host.toasts.find((toast) => toast.id === options.id);
     }
@@ -791,7 +902,7 @@ export class ToastStore implements ToastStoreBridge {
 
   private resolveGroupTarget(
     host: ToastHostState,
-    options: ToastOptions
+    options: ToastOptions,
   ): { mode: ToastGroupBehavior; target: ToastRecord } | null {
     if (!options.groupId) {
       return null;
@@ -802,7 +913,6 @@ export class ToastStore implements ToastStoreBridge {
       return null;
     }
 
-    // Single-pass scan avoids alloc/sort work on hot show() paths.
     let target: ToastRecord | undefined;
     for (const toast of host.toasts) {
       if (toast.groupId !== options.groupId || toast.lifecycle.isClosing) {
@@ -856,11 +966,14 @@ export class ToastStore implements ToastStoreBridge {
     id: ToastId,
     reason: CloseReason,
     hostIdHint?: string,
-    force = false
+    force = false,
   ): boolean {
     const location = this.findToast(id, hostIdHint);
     if (!location) {
-      this.debug(hostIdHint ?? this.defaultHostId, "close:missing", { id, reason });
+      this.debug(hostIdHint ?? this.defaultHostId, "close:missing", {
+        id,
+        reason,
+      });
       return false;
     }
 
@@ -890,7 +1003,9 @@ export class ToastStore implements ToastStoreBridge {
     this.updateHost(hostId, (currentHost) => {
       return {
         ...currentHost,
-        toasts: currentHost.toasts.map((item) => (item.id === id ? closingToast : item)),
+        toasts: currentHost.toasts.map((item) =>
+          item.id === id ? closingToast : item,
+        ),
       };
     });
 
@@ -945,7 +1060,7 @@ export class ToastStore implements ToastStoreBridge {
   private canDismissByReason(
     reason: CloseReason,
     toast: ToastRecord,
-    config: ResolvedToastHostConfig
+    config: ResolvedToastHostConfig,
   ): boolean {
     if (reason === "timeout" || reason === "programmatic") {
       return true;
@@ -983,14 +1098,20 @@ export class ToastStore implements ToastStoreBridge {
     this.startTimer(hostId, toast.id, duration);
   }
 
-  private resolveDismissible(toast: ToastRecord, config: ResolvedToastHostConfig): boolean {
+  private resolveDismissible(
+    toast: ToastRecord,
+    config: ResolvedToastHostConfig,
+  ): boolean {
     if (toast.dismissible !== undefined) {
       return toast.dismissible;
     }
     return config.dismissible;
   }
 
-  private createCallbackContext(toast: ToastRecord, reason?: CloseReason): ToastCallbackContext {
+  private createCallbackContext(
+    toast: ToastRecord,
+    reason?: CloseReason,
+  ): ToastCallbackContext {
     return {
       id: toast.id,
       hostId: toast.hostId,
@@ -1006,7 +1127,7 @@ export class ToastStore implements ToastStoreBridge {
 
   private safeInvokeCallback<T>(
     callback: ((context: T) => void) | undefined,
-    context: T
+    context: T,
   ): void {
     if (!callback) {
       return;
@@ -1019,7 +1140,10 @@ export class ToastStore implements ToastStoreBridge {
     }
   }
 
-  private updateHost(hostId: string, updater: (host: ToastHostState) => ToastHostState): void {
+  private updateHost(
+    hostId: string,
+    updater: (host: ToastHostState) => ToastHostState,
+  ): void {
     const current = this.state.hosts[hostId];
     if (!current) {
       return;
@@ -1045,7 +1169,8 @@ export class ToastStore implements ToastStoreBridge {
 
     warnHostAutoCreated(hostId);
 
-    const inheritedConfig = this.state.hosts[this.defaultHostId]?.config ?? this.baseHostConfig;
+    const inheritedConfig =
+      this.state.hosts[this.defaultHostId]?.config ?? this.baseHostConfig;
 
     const host: ToastHostState = {
       id: hostId,
@@ -1063,6 +1188,23 @@ export class ToastStore implements ToastStoreBridge {
 
     this.emit();
     return host;
+  }
+  private reapplyDefaultHostToMountedHosts(): void {
+    const mountedHostIds = Object.keys(this.state.hosts).filter(
+      (id) => id !== this.defaultHostId,
+    );
+
+    for (const hostId of mountedHostIds) {
+      const registration = this.hostRegistrations.get(hostId);
+      const fallbackInteractionMode =
+        this.state.hosts[hostId]?.config.interactionMode ?? "deck";
+
+      this.registerHost(
+        hostId,
+        registration?.config,
+        registration?.interactionMode ?? fallbackInteractionMode,
+      );
+    }
   }
 
   private findToast(id: ToastId, hostIdHint?: string): ToastLocation | null {
@@ -1126,14 +1268,16 @@ export class ToastStore implements ToastStoreBridge {
     if (interactionMode === "classic") {
       const baseClassicGesture =
         base.interactionMode === "classic" ? base.classicGesture : undefined;
-      const overrideClassicGesture = (overrides as { classicGesture?: ToastClassicGestureConfig })
-        .classicGesture;
+      const overrideClassicGesture = (
+        overrides as { classicGesture?: ToastClassicGestureConfig }
+      ).classicGesture;
 
       const {
         deckCollapsedMaxVisible: _deckCollapsedMaxVisible,
         deckExpandedMaxVisible: _deckExpandedMaxVisible,
         deckGesture: _deckGesture,
-        allowCollapsedFrontHorizontalDismiss: _allowCollapsedFrontHorizontalDismiss,
+        allowCollapsedFrontHorizontalDismiss:
+          _allowCollapsedFrontHorizontalDismiss,
         disableSwipeDismissAll: _disableSwipeDismissAll,
         collapseHandleStyle: _collapseHandleStyle,
         dismissAllConfirmation: _dismissAllConfirmation,
@@ -1169,22 +1313,27 @@ export class ToastStore implements ToastStoreBridge {
         onDismissAllComplete?: unknown;
       };
 
-      return resolveHostConfig({
-        ...classicMerged,
-        classicGesture: {
-          ...baseClassicGesture,
-          ...overrideClassicGesture,
-          itemDismiss: {
-            ...baseClassicGesture?.itemDismiss,
-            ...overrideClassicGesture?.itemDismiss,
+      return resolveHostConfig(
+        {
+          ...classicMerged,
+          classicGesture: {
+            ...baseClassicGesture,
+            ...overrideClassicGesture,
+            itemDismiss: {
+              ...baseClassicGesture?.itemDismiss,
+              ...overrideClassicGesture?.itemDismiss,
+            },
           },
         },
-      }, "classic");
+        "classic",
+      );
     }
 
-    const baseDeckGesture = base.interactionMode === "deck" ? base.deckGesture : undefined;
-    const overrideDeckGesture = (overrides as { deckGesture?: ToastDeckGestureConfig })
-      .deckGesture;
+    const baseDeckGesture =
+      base.interactionMode === "deck" ? base.deckGesture : undefined;
+    const overrideDeckGesture = (
+      overrides as { deckGesture?: ToastDeckGestureConfig }
+    ).deckGesture;
 
     const {
       classicMaxVisible: _classicMaxVisible,
@@ -1199,29 +1348,32 @@ export class ToastStore implements ToastStoreBridge {
       classicGesture?: unknown;
     };
 
-    return resolveHostConfig({
-      ...deckMerged,
-      deckGesture: {
-        ...baseDeckGesture,
-        ...overrideDeckGesture,
-        itemDismiss: {
-          ...baseDeckGesture?.itemDismiss,
-          ...overrideDeckGesture?.itemDismiss,
-        },
-        collapsedExpand: {
-          ...baseDeckGesture?.collapsedExpand,
-          ...overrideDeckGesture?.collapsedExpand,
-        },
-        collapsedDismissAll: {
-          ...baseDeckGesture?.collapsedDismissAll,
-          ...overrideDeckGesture?.collapsedDismissAll,
-        },
-        collapseHandle: {
-          ...baseDeckGesture?.collapseHandle,
-          ...overrideDeckGesture?.collapseHandle,
+    return resolveHostConfig(
+      {
+        ...deckMerged,
+        deckGesture: {
+          ...baseDeckGesture,
+          ...overrideDeckGesture,
+          itemDismiss: {
+            ...baseDeckGesture?.itemDismiss,
+            ...overrideDeckGesture?.itemDismiss,
+          },
+          collapsedExpand: {
+            ...baseDeckGesture?.collapsedExpand,
+            ...overrideDeckGesture?.collapsedExpand,
+          },
+          collapsedDismissAll: {
+            ...baseDeckGesture?.collapsedDismissAll,
+            ...overrideDeckGesture?.collapsedDismissAll,
+          },
+          collapseHandle: {
+            ...baseDeckGesture?.collapseHandle,
+            ...overrideDeckGesture?.collapseHandle,
+          },
         },
       },
-    }, "deck");
+      "deck",
+    );
   }
 
   private dismissHostToasts(hostId: string, reason: CloseReason): number {
@@ -1282,7 +1434,7 @@ export class ToastStore implements ToastStoreBridge {
             isClosing: false,
           },
         },
-        reason
+        reason,
       );
       this.clearCloseCycle(hostId, toast.id);
     }
@@ -1290,7 +1442,9 @@ export class ToastStore implements ToastStoreBridge {
     this.updateHost(hostId, (currentHost) => {
       return {
         ...currentHost,
-        toasts: currentHost.toasts.filter((toast) => !toRemoveIds.has(toast.id)),
+        toasts: currentHost.toasts.filter(
+          (toast) => !toRemoveIds.has(toast.id),
+        ),
       };
     });
   }
@@ -1308,13 +1462,19 @@ export class ToastStore implements ToastStoreBridge {
       reason,
       stage: "onClosingStart",
     });
-    this.safeInvokeCallback(toast.onClosingStart, this.createCallbackContext(toast, reason));
+    this.safeInvokeCallback(
+      toast.onClosingStart,
+      this.createCallbackContext(toast, reason),
+    );
     this.debug(toast.hostId, "lifecycle:onClose", {
       ...getToastRecordDebugMeta(toast),
       reason,
       stage: "onClose",
     });
-    this.safeInvokeCallback(toast.onClose, this.createCallbackContext(toast, reason));
+    this.safeInvokeCallback(
+      toast.onClose,
+      this.createCallbackContext(toast, reason),
+    );
   }
 
   private fireCloseEndOnce(toast: ToastRecord, reason: CloseReason): void {
@@ -1330,13 +1490,19 @@ export class ToastStore implements ToastStoreBridge {
       reason,
       stage: "onClosingEnd",
     });
-    this.safeInvokeCallback(toast.onClosingEnd, this.createCallbackContext(toast, reason));
+    this.safeInvokeCallback(
+      toast.onClosingEnd,
+      this.createCallbackContext(toast, reason),
+    );
     this.debug(toast.hostId, "lifecycle:onDismiss", {
       ...getToastRecordDebugMeta(toast),
       reason,
       stage: "onDismiss",
     });
-    this.safeInvokeCallback(toast.onDismiss, this.createCallbackContext(toast, reason));
+    this.safeInvokeCallback(
+      toast.onDismiss,
+      this.createCallbackContext(toast, reason),
+    );
   }
 
   private resetCloseCycle(hostId: string, id: ToastId): void {
@@ -1400,14 +1566,24 @@ export class ToastStore implements ToastStoreBridge {
 
   private isDebugEnabled(hostId?: string): boolean {
     if (hostId) {
-      return this.state.hosts[hostId]?.config.debug ?? this.baseHostConfig.debug;
+      return (
+        this.state.hosts[hostId]?.config.debug ?? this.baseHostConfig.debug
+      );
     }
 
     return this.baseHostConfig.debug;
   }
 
-  private debug(hostId: string, event: string, payload?: Record<string, unknown>): void {
-    const logger = createToastDebugLogger(this.isDebugEnabled(hostId), hostId, "store");
+  private debug(
+    hostId: string,
+    event: string,
+    payload?: Record<string, unknown>,
+  ): void {
+    const logger = createToastDebugLogger(
+      this.isDebugEnabled(hostId),
+      hostId,
+      "store",
+    );
     logger(event, payload);
   }
 
@@ -1421,7 +1597,7 @@ export class ToastStore implements ToastStoreBridge {
     variant: ToastVariant,
     options: string | ToastOptions,
     hostId?: string,
-    defaults?: Partial<ToastOptions>
+    defaults?: Partial<ToastOptions>,
   ): ToastId {
     return this.show(toVariantOptions(options, variant, defaults), hostId);
   }
@@ -1433,5 +1609,3 @@ export class ToastStore implements ToastStoreBridge {
     });
   }
 }
-
-
