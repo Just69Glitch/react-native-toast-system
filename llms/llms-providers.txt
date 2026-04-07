@@ -19,10 +19,14 @@ Related docs:
 
 - Creates ToastStore once per provider instance.
 - Registers default host using merged defaults.
-- Builds and injects template registry.
+- Builds and injects template registry (built-ins in base provider; custom registries when bound by `createToastSystem`).
 - Binds global bridge on mount.
 - Unbinds global bridge on unmount.
 - Provides context for host rendering and hook controllers.
+
+API contract note:
+- Base `ToastProviderProps` does not expose `templates`.
+- Template registration for custom names is routed through `createToastSystem({ templates })`.
 
 ## Default host behavior
 
@@ -49,4 +53,3 @@ Without active provider:
 
 Integration rule:
 - mount ToastProvider above all callers of `toast` and `useToast`
-

@@ -23,15 +23,18 @@ Role:
 - Owns ToastStore lifecycle.
 - Registers default host.
 - Binds/unbinds global toast bridge.
-- Injects template registry through context.
+- Injects resolved template registry through context (built-ins by default; custom via `createToastSystem`).
 
 Key props:
 - defaultHostId
 - defaultHostConfig
-- templates
 - debug
 - useRNScreensOverlay
 - rnScreensOverlayViewStyle
+
+Template registration note:
+- Base `ToastProvider` does not accept a `templates` prop.
+- Register custom templates with `createToastSystem({ templates })`.
 
 ## ToastHost / ToastViewport
 
@@ -104,4 +107,3 @@ Modal/sheet host:
 1. Mount ToastHost hostId="modal" (or sheet) inside that surface.
 2. Trigger with useToast("modal") or toast.host("modal").
 3. Wrap boundary with ToastNativeSurfaceBoundary when needed.
-

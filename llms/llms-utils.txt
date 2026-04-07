@@ -54,6 +54,7 @@ Use presets as baseline, then override per host config.
 
 `createToastSystem`:
 - returns typed ToastProvider, ToastHost, ToastViewport, useToast, toast, templates.
+- registers custom template names for strict typed flows; base provider/host contracts remain built-in-template only.
 - improves template-name safety for teams/design systems.
 
 ## Internal helper categories
@@ -65,4 +66,3 @@ toast-utils + stack-helpers handle:
 - gesture config normalization
 - stack sorting and split-by-position
 - rendered-window selection for classic/deck modes
-

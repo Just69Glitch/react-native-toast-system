@@ -67,9 +67,17 @@ From src/core/system.tsx:
 - TypedToastPromiseOptions<T, TTemplateName>
 - TypedToastController<TTemplateName>
 - TypedToastGlobal<TTemplateName>
+- TypedToastHostConfig<TTemplateName>
+- TypedToastProviderProps<TTemplateName>
+- TypedToastHostProps<TTemplateName>
+- TypedToastViewportProps<TTemplateName>
+- TypedToastSystem<TTemplateName>
 
 Use case:
 - Strong compile-time template-name constraints for large apps/design systems.
+
+Contract note:
+- `ToastProviderProps` in base API is built-in-template only and does not include a `templates` field.
 
 ## Contract reading rule
 
@@ -77,4 +85,3 @@ For exact allowed values/default semantics:
 1. use docs/API_OPTIONS.md and docs/API_LIFECYCLE.md first
 2. confirm export availability in src/types/index.ts
 3. confirm runtime behavior in src/core/store.ts if needed
-
