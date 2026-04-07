@@ -1,7 +1,14 @@
 import { Drawer } from "expo-router/drawer";
 import { Fragment, useMemo } from "react";
 import { ToastViewport } from "react-native-toast-system/components";
-import { useAppPreferences } from "@/hooks/use-app-preferences";
+import type { ToastHostProps } from "react-native-toast-system/types";
+
+type DeckViewportConfig = NonNullable<
+  Extract<ToastHostProps, { interactionMode?: "deck" | undefined }>["config"]
+>;
+type ClassicViewportConfig = NonNullable<
+  Extract<ToastHostProps, { interactionMode: "classic" }>["config"]
+>;
 
 const screenEntries = [
   { name: "feed", title: "Playground" },
@@ -16,9 +23,7 @@ const screenEntries = [
 ] as const;
 
 export default function DrawerLayout() {
-  const preferences = useAppPreferences();
-
-  const secondaryHostConfig = useMemo(
+  const secondaryHostConfig: DeckViewportConfig = useMemo(
     () => ({
       preset: "status" as const,
       position: "top" as const,
@@ -26,7 +31,7 @@ export default function DrawerLayout() {
     [],
   );
 
-  const nestedHostConfig = useMemo(
+  const nestedHostConfig: DeckViewportConfig = useMemo(
     () => ({
       preset: "minimal" as const,
       position: "bottom" as const,
@@ -34,7 +39,7 @@ export default function DrawerLayout() {
     [],
   );
 
-  const nestedRtlHostConfig = useMemo(
+  const nestedRtlHostConfig: DeckViewportConfig = useMemo(
     () => ({
       preset: "minimal" as const,
       position: "bottom" as const,
@@ -43,7 +48,7 @@ export default function DrawerLayout() {
     [],
   );
 
-  const classicHostConfig = useMemo(
+  const classicHostConfig: ClassicViewportConfig = useMemo(
     () => ({
       preset: "default" as const,
       position: "bottom" as const,

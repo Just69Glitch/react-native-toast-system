@@ -1,13 +1,20 @@
-import { useMemo } from "react";
-import { ToastHost, ToastViewport } from "../components/toast-host";
+import { useMemo, type ReactElement } from "react";
+import {
+  ToastHost as BaseToastHost,
+  ToastViewport as BaseToastViewport,
+} from "../components/toast-host";
 import { toast as globalToast } from "./global-bridge";
-import { ToastProvider as BaseToastProvider } from "../providers/toast-provider";
+import {
+  createBoundToastProvider,
+} from "../providers/toast-provider";
 import { useToastContext } from "../context";
 import { createToastTemplateRegistry } from "../components/toast-templates";
 import type {
   CloseReason,
   ToastController,
+  ToastHostProps,
   ToastId,
+  ToastHostConfig,
   ToastOptions,
   ToastPromiseOptions,
   ToastProviderProps,
@@ -86,7 +93,51 @@ export type TypedToastGlobal<TTemplateName extends string> = Omit<
   "hostId"
 > & { host: (hostId: string) => TypedToastController<TTemplateName> };
 
-type ToastProviderWithoutTemplates = Omit<ToastProviderProps, "templates">;
+export type TypedToastHostConfig<TTemplateName extends string> = ToastHostConfig extends infer TConfig
+  ? TConfig extends ToastHostConfig
+    ? Omit<TConfig, "defaultTemplate"> & { defaultTemplate?: TTemplateName }
+    : never
+  : never;
+
+type TypedHostConfigFromBase<
+  TConfig extends ToastHostConfig,
+  TTemplateName extends string,
+> = Omit<TConfig, "defaultTemplate"> & { defaultTemplate?: TTemplateName };
+
+export type TypedToastProviderProps<TTemplateName extends string> = Omit<
+  ToastProviderProps,
+  "defaultHostConfig"
+> & {
+  defaultHostConfig?: TypedToastHostConfig<TTemplateName>;
+};
+
+type TypedHostPropsFromBase<TBaseProps, TTemplateName extends string> =
+  TBaseProps extends { config?: infer TConfig }
+    ? Omit<TBaseProps, "config"> & {
+        config?: TConfig extends ToastHostConfig
+          ? TypedHostConfigFromBase<TConfig, TTemplateName>
+          : TConfig;
+      }
+    : TBaseProps;
+
+export type TypedToastHostProps<TTemplateName extends string> =
+  TypedHostPropsFromBase<ToastHostProps, TTemplateName>;
+
+export type TypedToastViewportProps<TTemplateName extends string> =
+  TypedToastHostProps<TTemplateName>;
+
+export type TypedToastSystem<TTemplateName extends string> = {
+  ToastProvider: (
+    props: TypedToastProviderProps<TTemplateName>,
+  ) => ReactElement;
+  ToastHost: (props: TypedToastHostProps<TTemplateName>) => ReactElement;
+  ToastViewport: (
+    props: TypedToastViewportProps<TTemplateName>,
+  ) => ReactElement;
+  useToast: (hostId?: string) => TypedToastController<TTemplateName>;
+  toast: TypedToastGlobal<TTemplateName>;
+  templates: Record<TTemplateName, ToastTemplateRenderer>;
+};
 
 function castController<TTemplateName extends string>(
   controller: ToastController,
@@ -111,9 +162,18 @@ export function createToastSystem<
   const resolvedTemplates = createToastTemplateRegistry(
     config?.templates as ToastTemplateRegistry | undefined,
   ) as Record<TemplateName, ToastTemplateRenderer>;
+  const BoundToastProvider = createBoundToastProvider(resolvedTemplates);
 
-  function ToastProvider(props: ToastProviderWithoutTemplates) {
-    return <BaseToastProvider {...props} templates={resolvedTemplates} />;
+  function ToastProvider(props: TypedToastProviderProps<TemplateName>) {
+    return <BoundToastProvider {...(props as ToastProviderProps)} />;
+  }
+
+  function ToastHost(props: TypedToastHostProps<TemplateName>) {
+    return <BaseToastHost {...(props as ToastHostProps)} />;
+  }
+
+  function ToastViewport(props: TypedToastViewportProps<TemplateName>) {
+    return <BaseToastViewport {...(props as ToastHostProps)} />;
   }
 
   function useToast(hostId?: string): TypedToastController<TemplateName> {
@@ -129,7 +189,7 @@ export function createToastSystem<
 
   const toast = globalToast as unknown as TypedToastGlobal<TemplateName>;
 
-  return {
+  const system: TypedToastSystem<TemplateName> = {
     ToastProvider,
     ToastHost,
     ToastViewport,
@@ -137,4 +197,6 @@ export function createToastSystem<
     toast,
     templates: resolvedTemplates,
   };
+
+  return system;
 }

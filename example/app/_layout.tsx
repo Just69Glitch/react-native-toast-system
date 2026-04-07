@@ -11,14 +11,15 @@ import { useEffect, useMemo, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-reanimated";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { ToastViewport } from "react-native-toast-system/components";
-import { ToastProvider } from "react-native-toast-system/providers";
 
 import { PreferencesBubble } from "@/components/preferences-bubble";
 import {
   AppPreferencesProvider,
   useAppPreferences,
 } from "@/hooks/use-app-preferences";
+import { ToastViewport } from "react-native-toast-system/components";
+import { ToastProvider } from "react-native-toast-system/providers";
+import type { ToastHostConfig } from "react-native-toast-system/types";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 
 export default function RootLayout() {
@@ -66,8 +67,11 @@ function RootLayoutContent() {
   const preferences = useAppPreferences();
   const toastTheme = preferences?.themeMode ?? "auto";
   const toastDirection = preferences?.toastDirection ?? "auto";
-  const defaultHostConfig = useMemo(
-    () => ({ theme: toastTheme, direction: toastDirection }),
+  const defaultHostConfig: ToastHostConfig = useMemo(
+    () => ({
+      theme: toastTheme,
+      direction: toastDirection,
+    }),
     [toastTheme, toastDirection],
   );
 

@@ -50,4 +50,9 @@ export type {
   TypedToastPromiseOptions,
   TypedToastController,
   TypedToastGlobal,
+  TypedToastHostConfig,
+  TypedToastProviderProps,
+  TypedToastHostProps,
+  TypedToastViewportProps,
+  TypedToastSystem,
 } from "../core/system";

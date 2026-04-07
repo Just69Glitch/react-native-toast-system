@@ -1,12 +1,16 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, type ReactElement } from "react";
 import { DEFAULT_HOST_ID } from "../constants/toast-constants";
 import { ToastContext } from "../context";
 import { bindToastBridge, unbindToastBridge } from "../core/global-bridge";
 import { ToastStore } from "../core/store";
 import { createToastTemplateRegistry } from "../components/toast-templates";
-import type { ToastProviderProps } from "../types";
+import type { ToastProviderProps, ToastTemplateRegistry } from "../types";
 
-export function ToastProvider({
+type ToastProviderInternalProps = ToastProviderProps & {
+  templates?: ToastTemplateRegistry;
+};
+
+function ToastProviderInternal({
   children,
   defaultHostId = DEFAULT_HOST_ID,
   defaultHostConfig,
@@ -14,7 +18,7 @@ export function ToastProvider({
   debug,
   useRNScreensOverlay,
   rnScreensOverlayViewStyle,
-}: ToastProviderProps) {
+}: ToastProviderInternalProps) {
   const normalizedDefaultHostConfig = useMemo(() => {
     return {
       ...defaultHostConfig,
@@ -57,5 +61,17 @@ export function ToastProvider({
   }, [defaultHostId, resolvedTemplates, store]);
 
   return <ToastContext.Provider value={contextValue}>{children}</ToastContext.Provider>;
+}
+
+export function ToastProvider(props: ToastProviderProps): ReactElement {
+  return <ToastProviderInternal {...props} />;
+}
+
+export function createBoundToastProvider(
+  templates: ToastTemplateRegistry,
+): (props: ToastProviderProps) => ReactElement {
+  return function BoundToastProvider(props: ToastProviderProps) {
+    return <ToastProviderInternal {...props} templates={templates} />;
+  };
 }
 

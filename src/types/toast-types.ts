@@ -485,7 +485,6 @@ export interface ToastProviderProps {
   children?: ReactNode;
   defaultHostId?: string;
   defaultHostConfig?: ToastHostConfig;
-  templates?: ToastTemplateRegistry;
   debug?: boolean;
   useRNScreensOverlay?: boolean;
   rnScreensOverlayViewStyle?: StyleProp<ViewStyle>;
