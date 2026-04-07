@@ -18,6 +18,27 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 - _No unreleased entries yet._
 
+## [1.3.0] - 2026-04-07
+
+### Added
+
+- New exported utility types for strict template-aware provider config: `TypedToastHostConfig<TTemplateName>` and `TypedToastProviderProps<TTemplateName>`.
+- New exported utility types for strict template-aware host config props: `TypedToastHostProps<TTemplateName>` and `TypedToastViewportProps<TTemplateName>`.
+- New exported `TypedToastSystem<TTemplateName>` type for importing and reusing the typed `createToastSystem` return contract.
+
+### Changed
+
+- `createToastSystem` now returns typed `ToastHost` and `ToastViewport` wrappers that keep `config.defaultTemplate` aligned with the same inferred template-name union used by the typed provider/controller APIs.
+- `createToastSystem` return shape is runtime-only (provider/host/viewport/controllers/templates); typing helpers are now importable types instead of returned functions.
+- Base `ToastProvider` no longer accepts a public `templates` prop; custom template registration is now done through `createToastSystem({ templates })`.
+- Base `ToastOptions.template` and host `defaultTemplate` contracts are built-in template only (`compact`, `banner`); custom template names are exposed through typed system helpers.
+
+### Fixed
+
+- Resolved production TypeScript error where custom template names (for example `"blurred"`) were rejected for `defaultHostConfig.defaultTemplate` despite template registration.
+- Local host/viewport config typing now stays aligned with custom template names when using `createToastSystem`.
+- Docs now include a clearer custom-template workflow centered on `createToastSystem` registration.
+
 ## [1.2.4] - 2026-04-06
 
 ### Fixed
