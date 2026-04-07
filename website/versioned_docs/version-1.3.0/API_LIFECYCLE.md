@@ -139,5 +139,9 @@ Public root type exports include:
 - `TypedToastPromiseOptions`
 - `TypedToastController`
 - `TypedToastGlobal`
+- `TypedToastHostConfig`
+- `TypedToastProviderProps`
+- `TypedToastHostProps`
+- `TypedToastViewportProps`
 
 Use `src/index.ts` as source-of-truth export index for contract verification.

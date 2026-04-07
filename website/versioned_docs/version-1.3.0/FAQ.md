@@ -95,7 +95,7 @@ These systems are complementary and can be combined.
 
 ## How do I style and theme toasts?
 
-Use host config (`theme`, class/style fields, presets) and toast-level options (`className`, `style`, title/description style props, templates). For stricter template contracts, use `createToastSystem`.
+Use host config (`theme`, class/style fields, presets) and toast-level options (`className`, `style`, title/description style props, templates). Register custom templates through `createToastSystem({ templates })`, then select with `defaultTemplate` or toast-level `template`. Base `ToastProvider`/`ToastHost` contracts stay built-in-template only.
 
 ## How does RTL support work?
 

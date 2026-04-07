@@ -91,14 +91,7 @@ Signature:
 ```ts
 function createToastSystem<const TTemplates extends ToastTemplateMap = {}>(config?: {
   templates?: TTemplates;
-}): {
-  ToastProvider: (props: Omit<ToastProviderProps, "templates">) => JSX.Element;
-  ToastHost: typeof ToastHost;
-  ToastViewport: typeof ToastHost;
-  useToast: (hostId?: string) => TypedToastController<ToastTemplateNameFromMap<TTemplates>>;
-  toast: TypedToastGlobal<ToastTemplateNameFromMap<TTemplates>>;
-  templates: Record<ToastTemplateNameFromMap<TTemplates>, ToastTemplateRenderer>;
-};
+}): TypedToastSystem<ToastTemplateNameFromMap<TTemplates>>;
 ```
 
 #### Input Contract
@@ -112,9 +105,63 @@ function createToastSystem<const TTemplates extends ToastTemplateMap = {}>(confi
 
 | Name | Type | Description |
 | --- | --- | --- |
-| `ToastProvider` | `(props: Omit<ToastProviderProps, "templates">) => JSX.Element` | Provider pre-bound to resolved template registry. |
-| `ToastHost` | `typeof ToastHost` | Public host renderer component. |
-| `ToastViewport` | `typeof ToastHost` | Alias of `ToastHost`. |
+| `ToastProvider` | `(props: TypedToastProviderProps<TemplateName>) => JSX.Element` | Provider pre-bound to resolved template registry with template-aware `defaultHostConfig.defaultTemplate` typing. |
+| `ToastHost` | `(props: TypedToastHostProps<TemplateName>) => JSX.Element` | Typed host component with template-aware `config.defaultTemplate`. |
+| `ToastViewport` | `(props: TypedToastViewportProps<TemplateName>) => JSX.Element` | Typed viewport alias with template-aware `config.defaultTemplate`. |
 | `useToast` | `(hostId?: string) => TypedToastController<TemplateName>` | Typed host-scoped hook controller. |
 | `toast` | `TypedToastGlobal<TemplateName>` | Typed global controller facade. |
 | `templates` | `Record<TemplateName, ToastTemplateRenderer>` | Resolved typed template registry. |
+
+#### Template-Aware Helper Types
+
+`createToastSystem` also exposes utility types you can use in app-level wrappers:
+
+```ts
+type TypedToastHostConfig<TTemplateName extends string> = // ToastHostConfig with template-safe defaultTemplate
+type TypedToastProviderProps<TTemplateName extends string> = // ToastProvider props with template-safe defaultHostConfig
+type TypedToastHostProps<TTemplateName extends string> = // ToastHost props with template-safe config.defaultTemplate
+type TypedToastViewportProps<TTemplateName extends string> = // ToastViewport props with template-safe config.defaultTemplate
+type TypedToastSystem<TTemplateName extends string> = // Full typed return contract from createToastSystem
+```
+
+Type-only usage example:
+
+```ts
+import {
+  type TypedToastHostConfig,
+  createToastSystem,
+  createToastTemplates,
+} from "react-native-toast-system";
+
+const templates = createToastTemplates({
+  blurred: (props) => null,
+});
+
+createToastSystem({ templates });
+
+type AppTemplateName = keyof typeof templates;
+type AppHostConfig = TypedToastHostConfig<AppTemplateName>;
+
+const config: AppHostConfig = {
+  defaultTemplate: "blurred",
+  position: "top",
+};
+```
+
+Default-import usage (no `createToastSystem`) can type host config by mode:
+
+```ts
+import type { ToastHostProps } from "react-native-toast-system/types";
+
+type DeckViewportConfig = NonNullable<
+  Extract<ToastHostProps, { interactionMode?: "deck" | undefined }>["config"]
+>;
+type ClassicViewportConfig = NonNullable<
+  Extract<ToastHostProps, { interactionMode: "classic" }>["config"]
+>;
+```
+
+Template-key strictness tips:
+
+- Keep template keys as literals (for example by using `createToastTemplates`).
+- Avoid widening templates to `Record<string, ToastTemplateRenderer>` if you want strict key-level checks.

@@ -63,6 +63,9 @@ const config = {
             "1.2.0": {
               label: "1.2.x",
             },
+            "1.3.0": {
+              label: "1.3.x",
+            },
           },
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl:

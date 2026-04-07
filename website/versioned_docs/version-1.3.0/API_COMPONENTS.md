@@ -38,10 +38,14 @@ function ToastProvider(props: ToastProviderProps): JSX.Element;
 | `children` | `ReactNode` | no | `none` | Provider subtree content. | any React node |
 | `defaultHostId` | `string` | no | `"default"` | Default host id used by `toast` and `useToast()` when host is omitted. | any non-empty string |
 | `defaultHostConfig` | `ToastHostConfig` | no | `none` | Default host behavior overrides merged into runtime host defaults. Runtime updates are re-applied to mounted hosts while preserving each host's local overrides. | valid `ToastHostConfig` object |
-| `templates` | `ToastTemplateRegistry` | no | `none` | Template renderer map merged with built-ins. | record of template name to renderer |
 | `debug` | `boolean` | no | `none` | Provider-level debug fallback for default host if `defaultHostConfig.debug` is omitted. | `true`, `false` |
 | `useRNScreensOverlay` | `boolean` | no | `none` | Provider-level overlay fallback for default host if `defaultHostConfig.useRNScreensOverlay` is omitted. | `true`, `false` |
 | `rnScreensOverlayViewStyle` | `StyleProp<ViewStyle>` | no | `none` | Provider-level overlay view style fallback for default host. | any React Native view style |
+
+Template registration note:
+
+- `ToastProvider` no longer accepts a `templates` prop.
+- Register custom templates through `createToastSystem({ templates })`.
 
 ### `ToastHost` and `ToastViewport`
 
@@ -137,3 +141,4 @@ function ToastDismissIconButton(props: {
 | `iconSize` | `number` | no | `18` | Close icon size. | positive number |
 | `className` | `string` | no | `none` | Optional button class name. | any string |
 | `style` | `StyleProp<ViewStyle>` | no | `none` | Optional button style. | any React Native view style |
+
