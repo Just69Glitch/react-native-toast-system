@@ -79,6 +79,7 @@ Caption: Root success, modal error, sheet warning, deduped retries, promise load
 - Demo script: [docs/DEMO_HOST_AWARE_FLOW.md](./docs/DEMO_HOST_AWARE_FLOW.md)
 - Decision guide: [docs/COMPARISON_POSITIONING.md](./docs/COMPARISON_POSITIONING.md)
 - Getting Started: [docs/GETTING_STARTED.md](./docs/GETTING_STARTED.md)
+- Templates + grouping onboarding: [docs/ONBOARDING_05_TEMPLATES_GROUPING.md](./docs/ONBOARDING_05_TEMPLATES_GROUPING.md)
 - API Reference: [docs/API_REFERENCE.md](./docs/API_REFERENCE.md)
 - Architecture: [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md)
 - Troubleshooting: [docs/TROUBLESHOOTING.md](./docs/TROUBLESHOOTING.md)

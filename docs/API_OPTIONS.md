@@ -62,7 +62,7 @@ Contract details for configuration and option objects used by hosts/controllers.
 | `zIndexBase` | `number` | no | `10000` | Host z-index base. | number |
 | `zIndexStep` | `number` | no | `10` | Step per stacked layer. | integer `>=1` |
 | `layering` | `"newer-on-top" \| "older-on-top"` | no | `"newer-on-top"` | Layering strategy. | `newer-on-top`, `older-on-top` |
-| `defaultTemplate` | `ToastTemplate` | no | `"compact"` | Host template fallback when toast template omitted. | `compact`, `banner` |
+| `defaultTemplate` | `ToastTemplate` | no | `"compact"` | Host template fallback when toast template omitted. Built-in templates only in base APIs. | `compact`, `banner` |
 | `useRNScreensOverlay` | `boolean` | no | `false` | Enables RN Screens FullWindowOverlay path when available. | `true`, `false` |
 | `rnScreensOverlayViewStyle` | `StyleProp<ViewStyle>` | no | `none` | Style for overlay container. | any React Native view style |
 | `className` | `string` | no | `none` | Host container class name. | any string |
@@ -132,7 +132,7 @@ Classic mode contract note:
 | `description` | `string` | no | `none` | Secondary body text. | any string |
 | `icon` | `ReactNode` | no | `none` | Custom icon node override. | any React node |
 | `actions` | `ToastAction[]` | no | `none` | Action buttons for toast. | array of `ToastAction` |
-| `template` | `ToastTemplate` | no | host `defaultTemplate` (`compact`) | Built-in template selector. | `compact`, `banner` |
+| `template` | `ToastTemplate` | no | host `defaultTemplate` (`compact`) | Built-in template selector in base APIs. | `compact`, `banner` |
 | `render` | `(context: { toast; resolvedTheme; dismiss; update; onPress; onPressIn; onPressOut; onActionPress }) => ReactNode` | no | `none` | Full custom render override. | callback returning React node |
 
 ### Variant and Dismiss Behavior
